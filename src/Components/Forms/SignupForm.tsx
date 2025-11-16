@@ -45,14 +45,34 @@ const SignupForm = () => {
           confirmPassword: '',
         }}
         validationSchema={SignupSchema}
-        onSubmit={(values: Values, actions) => {
-          actions.setSubmitting(false)
+        onSubmit={async (values: Values) => {
+          const response = await fetch('https://example.org/post', {
+            mode: 'no-cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              firstName: values.firstName,
+              lastName: values.lastName,
+              username: values.username,
+              password: values.password,
+            }),
+          })
 
-          console.log(values)
+          try {
+            const responseJson = await response.json()
+
+            if (responseJson.status !== 200) {
+              console.error(responseJson.message)
+            } else {
+              console.log('Submitted successfully')
+            }
+          } catch (err) {
+            console.error('Server error', err)
+          }
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper>
+          <FormWrapper method="POST" action="http://localhost:8080/api/signup">
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="firstName">First Name*:</label>
