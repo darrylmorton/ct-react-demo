@@ -16,7 +16,17 @@ const dirname =
 export default defineConfig({
   plugins: [react()],
   test: {
+    globals: true,
+    setupFiles: './src/tests/setup.ts',
     projects: [
+      {
+        extends: true,
+        test: {
+          name: 'react-components',
+          include: ['**/*.spec.tsx'],
+          environment: 'jsdom',
+        },
+      },
       {
         extends: true,
         plugins: [
