@@ -17,7 +17,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    setupFiles: './src/tests/setup.ts',
+    setupFiles: 'vite.setup.ts',
     projects: [
       {
         extends: true,
