@@ -5,19 +5,20 @@ import { Formik, Field, Form, type FormikHelpers } from 'formik'
 interface Values {
   firstName: string
   lastName: string
-  email: string
+  username: string
+  password: string
+  confirmPassword: string
 }
 
 const SignupForm = () => {
   return (
     <div>
       <Title>Signup Form</Title>
-      {/* TODO update */}
       <Formik
         initialValues={{
           firstName: '',
           lastName: '',
-          email: '',
+          username: '',
           password: '',
           confirmPassword: '',
         }}
@@ -98,9 +99,8 @@ const Title = styled.div`
 const FormWrapper = styled(Form)`
   display: flex;
   flex-direction: column;
-  width: 100%;
-
   place-items: center;
+  width: 100%;
 `
 
 const FormRow = styled.div`
