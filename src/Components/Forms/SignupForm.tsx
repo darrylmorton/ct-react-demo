@@ -3,18 +3,7 @@ import styled from '@emotion/styled'
 import { Formik, Field, Form } from 'formik'
 import { useState, useEffect } from 'react'
 import * as Yup from 'yup'
-
-interface Values {
-  firstName: string
-  lastName: string
-  username: string
-  password: string
-  confirmPassword: string
-}
-
-export const EMAIL_REGEX = new RegExp(
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/gm
-)
+import { EMAIL_REGEX, request, type Values } from '../../util/AppUtil.ts'
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -60,17 +49,7 @@ const SignupForm = () => {
         }}
         validationSchema={SignupSchema}
         onSubmit={async (values: Values) => {
-          const response = await fetch('https://example.org/post', {
-            mode: 'no-cors',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              firstName: values.firstName,
-              lastName: values.lastName,
-              username: values.username,
-              password: values.password,
-            }),
-          })
+          const response = await request(values)
 
           try {
             const responseJson = await response.json()
@@ -94,7 +73,7 @@ const SignupForm = () => {
           <FormWrapper
             id="signupForm"
             method="POST"
-            action="http://localhost:8080/api/signup"
+            action="http://localhost:3001/api/signup"
           >
             <FormRow>
               <FormColumn textAlign="left">
