@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 // import 'react-app-polyfill/ie11';
 import { Formik, Field, Form } from 'formik'
+import { useState, useEffect } from 'react'
 import * as Yup from 'yup'
 
 interface Values {
@@ -11,6 +12,10 @@ interface Values {
   confirmPassword: string
 }
 
+export const EMAIL_REGEX = new RegExp(
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/gm
+)
+
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
     .min(2, 'Too Short!')
@@ -20,7 +25,11 @@ const SignupSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(30, 'Too Long!')
     .required('Required'),
-  username: Yup.string().email('Invalid email').required('Required'),
+  username: Yup.string()
+    .matches(EMAIL_REGEX, {
+      message: 'Invalid email',
+    })
+    .required('Required'),
   password: Yup.string()
     .min(8, 'Too Short!')
     .max(16, 'Too Long!')
@@ -33,9 +42,14 @@ const SignupSchema = Yup.object().shape({
 })
 
 const SignupForm = () => {
+  const [formMessage, setFormMessage] = useState<string>('')
+
+  useEffect(() => {}, [formMessage])
+
   return (
     <div>
       <Title>Signup Form</Title>
+      {formMessage && <div>{formMessage}</div>}
       <Formik
         initialValues={{
           firstName: '',
@@ -60,19 +74,28 @@ const SignupForm = () => {
 
           try {
             const responseJson = await response.json()
+            console.log('responseJson.status', responseJson.status)
 
             if (responseJson.status !== 200) {
               console.error(responseJson.message)
+
+              setFormMessage('Submitted unsuccessfully')
             } else {
-              console.log('Submitted successfully')
+              setFormMessage('Submitted successfully')
             }
           } catch (err) {
             console.error('Server error', err)
+
+            setFormMessage('There was a problem submitting the form')
           }
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper method="POST" action="http://localhost:8080/api/signup">
+          <FormWrapper
+            id="signupForm"
+            method="POST"
+            action="http://localhost:8080/api/signup"
+          >
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="firstName">First Name*:</label>
@@ -104,7 +127,6 @@ const SignupForm = () => {
                   id="username"
                   name="username"
                   placeholder="john@example.com"
-                  type="email"
                 />
                 {errors.username && touched.username ? (
                   <FormFieldError>{errors.username}</FormFieldError>

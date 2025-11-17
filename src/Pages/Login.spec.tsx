@@ -7,6 +7,6 @@ describe('Login Page', () => {
   test('Should render the <Login />', () => {
     render(<Login />)
 
-    expect(screen.getByText('Login')).toBeTruthy()
+    expect(screen.getByText('Login')).toBeInTheDocument()
   })
 })
