@@ -48,6 +48,7 @@ describe('Signup Form', () => {
   })
 
   test('Submits form unsuccessfully with valid inputs', async () => {
+    // @ts-expect-error ts-ignore
     global.fetch = vi.fn(() =>
       Promise.resolve({
         json: () =>
@@ -82,14 +83,15 @@ describe('Signup Form', () => {
   })
 
   test('Submits form successfully with valid inputs', async () => {
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
+    // @ts-expect-error ts-ignore
+    global.fetch = vi.fn(() => {
+      return Promise.resolve({
         json: () =>
           Promise.resolve({
             status: 200,
           }),
       })
-    )
+    })
 
     render(<SignupForm />)
 
