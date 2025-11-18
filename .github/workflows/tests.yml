@@ -38,26 +38,73 @@ jobs:
       - name: Setup
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/setup@main
         with:
-          nodejs-version: '22.x'
+          nodejs-version: 22.x
 
-      - name: Build
-        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/build@main
-        with:
-          nodejs-version: '22.x'
-
-  test-unit-coverage:
+  install-nodejs:
     needs: [ setup ]
-    name: Run unit tests with coverage
+    name: Install Node.js
     runs-on: ubuntu-latest
 
     steps:
       - name: actions checkout
         uses: actions/checkout@v4
 
-      - name: Unit tests
+      - name: Install Node.js
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
+        with:
+          nodejs-version: 22.x
+
+  install-dependencies:
+    needs: [ setup, install-nodejs ]
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js Dependencies
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
+
+  lint:
+    needs: [ setup, install-nodejs, install-dependencies ]
+    name: Run setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Lint
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/lint@main
+
+  build:
+    needs: [ setup, install-nodejs, install-dependencies, lint ]
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/build@main
+        with:
+          nodejs-version: 22.x
+
+  test-unit-coverage:
+    needs: [ setup, install-nodejs, install-dependencies, lint ]
+    name: Run Unit Tests with Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Unit Tests
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main
         with:
-          nodejs-version: '22.x'
+          nodejs-version: 22.x
 
 #      - uses: actions/checkout@master
 #      - uses: actions/setup-node@master
@@ -92,7 +139,7 @@ jobs:
 #        run: npm run test:unit-coverage
 
   test-integration-coverage:
-    needs: [ setup ]
+    needs: [ setup, install-nodejs, install-dependencies, lint ]
     name: Run integration tests with coverage
     runs-on: ubuntu-latest
 
@@ -103,7 +150,7 @@ jobs:
       - name: Setup
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-integration@main
         with:
-          nodejs-version: '22.x'
+          nodejs-version: 22.x
 
 #      - uses: actions/setup-node@master
 #        with:
