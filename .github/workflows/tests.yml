@@ -55,7 +55,7 @@ jobs:
           nodejs-version: 22.x
 
   install-dependencies:
-    needs: [ setup, install-nodejs ]
+    needs: [ setup ]
     name: Install Dependencies
     runs-on: ubuntu-latest
 
@@ -67,7 +67,7 @@ jobs:
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
 
   lint:
-    needs: [ install-dependencies ]
+    needs: [ setup ]
     name: Lint
     runs-on: ubuntu-latest
 
