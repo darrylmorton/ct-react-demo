@@ -67,7 +67,7 @@ jobs:
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
 
   lint:
-    needs: [ setup, install-nodejs, install-dependencies ]
+    needs: [ setup ]
     name: Lint
     runs-on: ubuntu-latest
 
