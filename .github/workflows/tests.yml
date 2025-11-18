@@ -1,0 +1,140 @@
+name: Lint and Test
+
+on:
+  push:
+    branches-ignore: ["main"]
+
+jobs:
+#  dependency-check:
+#    name: Run dependency check
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Dependency Check
+#        run: npm run depcheck
+
+  setup:
+    name: Run setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/setup@main
+        with:
+          nodejs-version: '22.x'
+
+      - name: Build
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/build@main
+        with:
+          nodejs-version: '22.x'
+
+  test-unit-coverage:
+    needs: [ setup ]
+    name: Run unit tests with coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Unit tests
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main
+        with:
+          nodejs-version: '22.x'
+
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: build
+#        uses: ./.github/actions/setup-nodejs
+#        with:
+#          working-directory: 'mysubdirectory/'
+#          nodejs-version: '22.x'
+
+#      - name: Install Packages
+#        working-directory: mysubdirectory/
+#        run: npm ci
+
+#      - name: Setup nodejs dependencies
+#        uses: ./.github/actions/install-nodejs-dependencies
+#        with:
+#          working-directory: 'mysubdirectory/'
+##          nodejs-version: '22.x'
+#
+#      - name: Run unit tests
+#        working-directory: 'mysubdirectory/'
+#        run: npm run test:unit-coverage
+
+  test-integration-coverage:
+    needs: [ setup ]
+    name: Run integration tests with coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-integration@main
+        with:
+          nodejs-version: '22.x'
+
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        working-directory: mysubdirectory/
+#        run: npm ci
+#      - name: Install nodejs dependencies
+#        uses: ./.github/actions/install-nodejs-dependencies
+#        with:
+#          working-directory: 'mysubdirectory/'
+##          nodejs-version: '22.x'
+#
+#      - name: Setup dependencies
+#        working-directory: mysubdirectory/
+#        run: docker compose up -d
+#      - name: Sleep
+#        uses: kibertoad/wait-action@1.0.1
+#        with:
+#          time: '30s'
+#      - name: Initialise DB
+#        working-directory: mysubdirectory/
+#        run: npm run test:migrate
+#      - name: Run integration tests
+#        working-directory: mysubdirectory/
+#        run: npm run test:integration-coverage
