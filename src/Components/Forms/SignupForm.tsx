@@ -3,7 +3,12 @@ import styled from '@emotion/styled'
 import { Formik, Field, Form } from 'formik'
 import { useState, useEffect } from 'react'
 import * as Yup from 'yup'
-import { EMAIL_REGEX, request, type Values } from '../../util/AppUtil.ts'
+import {
+  EMAIL_REGEX,
+  request,
+  type FormValues,
+  type RequestValues,
+} from '../../util/AppUtil.ts'
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -40,16 +45,23 @@ const SignupForm = () => {
       <Title>Signup Form</Title>
       {formMessage && <div>{formMessage}</div>}
       <Formik
-        initialValues={{
-          firstName: '',
-          lastName: '',
-          username: '',
-          password: '',
-          confirmPassword: '',
-        }}
+        initialValues={
+          {
+            firstName: '',
+            lastName: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+          } as FormValues
+        }
         validationSchema={SignupSchema}
-        onSubmit={async (values: Values) => {
-          const response = await request(values)
+        onSubmit={async (values: FormValues) => {
+          const response = await request({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            username: values.username,
+            password: values.password,
+          } as RequestValues)
 
           try {
             const responseJson = await response.json()
