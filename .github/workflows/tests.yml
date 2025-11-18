@@ -113,8 +113,6 @@ jobs:
 
       - name: Build
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/build@main
-        with:
-          nodejs-version: 22.x
 
   test-unit-coverage:
     needs: [ setup, install-nodejs, install-dependencies, lint ]
@@ -136,6 +134,9 @@ jobs:
       - name: Install Node.js Dependencies
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
 
+      - name: Lint
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/lint@main
+        
       - name: Unit Tests
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main
         with:
