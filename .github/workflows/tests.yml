@@ -123,9 +123,6 @@ jobs:
       - name: actions checkout
         uses: actions/checkout@v4
 
-      - name: actions checkout
-        uses: actions/checkout@v4
-
       - name: Install Node.js
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
         with:
@@ -139,5 +136,3 @@ jobs:
 
       - name: Unit Tests
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main
-        with:
-          nodejs-version: 22.x
