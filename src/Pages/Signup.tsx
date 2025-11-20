@@ -10,7 +10,10 @@ function Signup() {
   )
 }
 
-const Wrapper = styled('div')`
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
   padding: 32px;
 `
 

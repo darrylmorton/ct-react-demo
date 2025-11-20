@@ -1,8 +1,8 @@
-name: Lint and Test
+name: Install, Lint, Build and Test
 
 on:
   push:
-    branches-ignore: ["main"]
+    branches-ignore: [ 'main' ]
 
 jobs:
 #  dependency-check:

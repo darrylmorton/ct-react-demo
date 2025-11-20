@@ -37,13 +37,18 @@ const SignupSchema = Yup.object().shape({
 
 const SignupForm = () => {
   const [formMessage, setFormMessage] = useState<string>('')
+  const [formErrorMessage, setFormErrorMessage] = useState<string>('')
 
-  useEffect(() => {}, [formMessage])
+  useEffect(() => {}, [formMessage, formErrorMessage])
 
   return (
     <div>
       <Title>Signup Form</Title>
       {formMessage && <div>{formMessage}</div>}
+      {formErrorMessage && (
+        <FormErrorMessage>{formErrorMessage}</FormErrorMessage>
+      )}
+
       <Formik
         initialValues={
           {
@@ -70,14 +75,17 @@ const SignupForm = () => {
             if (responseJson.status !== 200) {
               console.error(responseJson.message)
 
-              setFormMessage('Submitted unsuccessfully')
+              setFormErrorMessage('Submitted unsuccessfully')
+              if (formMessage) setFormMessage('')
             } else {
               setFormMessage('Submitted successfully')
+              if (formErrorMessage) setFormErrorMessage('')
             }
           } catch (err) {
             console.error('Server error', err)
 
-            setFormMessage('There was a problem submitting the form')
+            setFormErrorMessage('There was a problem submitting the form')
+            if (formMessage) setFormMessage('')
           }
         }}
       >
@@ -96,7 +104,7 @@ const SignupForm = () => {
                   placeholder="First Name"
                 />
                 {errors.firstName && touched.firstName ? (
-                  <FormFieldError>{errors.firstName}</FormFieldError>
+                  <FormErrorMessage>{errors.firstName}</FormErrorMessage>
                 ) : null}
               </FormColumn>
               <FormColumn textAlign="left">
@@ -107,7 +115,7 @@ const SignupForm = () => {
                   placeholder="Last Name"
                 />
                 {errors.lastName && touched.lastName ? (
-                  <FormFieldError>{errors.lastName}</FormFieldError>
+                  <FormErrorMessage>{errors.lastName}</FormErrorMessage>
                 ) : null}
               </FormColumn>
             </FormRow>
@@ -120,7 +128,7 @@ const SignupForm = () => {
                   placeholder="john@example.com"
                 />
                 {errors.username && touched.username ? (
-                  <FormFieldError>{errors.username}</FormFieldError>
+                  <FormErrorMessage>{errors.username}</FormErrorMessage>
                 ) : null}
               </FormColumn>
             </FormRow>
@@ -133,7 +141,7 @@ const SignupForm = () => {
                   placeholder="Password"
                 />
                 {errors.password && touched.password ? (
-                  <FormFieldError>{errors.password}</FormFieldError>
+                  <FormErrorMessage>{errors.password}</FormErrorMessage>
                 ) : null}
               </FormColumn>
               <FormColumn textAlign="left">
@@ -144,7 +152,7 @@ const SignupForm = () => {
                   placeholder="Confirm Password"
                 />
                 {errors.confirmPassword && touched.confirmPassword ? (
-                  <FormFieldError>{errors.confirmPassword}</FormFieldError>
+                  <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
                 ) : null}
               </FormColumn>
             </FormRow>
@@ -207,7 +215,7 @@ const FormField = styled(Field)`
   font-size: 1rem;
 `
 
-const FormFieldError = styled.div`
+const FormErrorMessage = styled.div`
   color: #ff0000;
 `
 
