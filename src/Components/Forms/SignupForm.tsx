@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 // import 'react-app-polyfill/ie11';
-import { Formik, Field, Form } from 'formik'
+import { Formik, Form } from 'formik'
 import { useState, useEffect } from 'react'
 import * as Yup from 'yup'
 import {
@@ -9,6 +9,7 @@ import {
   type FormValues,
   type RequestValues,
 } from '../../util/AppUtil.ts'
+import TextField from '@mui/material/TextField'
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -102,6 +103,8 @@ const SignupForm = () => {
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
+                  variant="outlined"
+                  size="small"
                 />
                 {errors.firstName && touched.firstName ? (
                   <FormErrorMessage>{errors.firstName}</FormErrorMessage>
@@ -113,6 +116,8 @@ const SignupForm = () => {
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
+                  variant="outlined"
+                  size="small"
                 />
                 {errors.lastName && touched.lastName ? (
                   <FormErrorMessage>{errors.lastName}</FormErrorMessage>
@@ -126,6 +131,8 @@ const SignupForm = () => {
                   id="username"
                   name="username"
                   placeholder="john@example.com"
+                  variant="outlined"
+                  size="small"
                 />
                 {errors.username && touched.username ? (
                   <FormErrorMessage>{errors.username}</FormErrorMessage>
@@ -139,6 +146,8 @@ const SignupForm = () => {
                   id="password"
                   name="password"
                   placeholder="Password"
+                  variant="outlined"
+                  size="small"
                 />
                 {errors.password && touched.password ? (
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
@@ -150,6 +159,8 @@ const SignupForm = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   placeholder="Confirm Password"
+                  variant="outlined"
+                  size="small"
                 />
                 {errors.confirmPassword && touched.confirmPassword ? (
                   <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
@@ -209,9 +220,8 @@ const FormColumn = styled('div')<FormColumnProps>`
   text-align: ${(props) => props.textAlign};
 `
 
-const FormField = styled(Field)`
+const FormField = styled(TextField)`
   width: 100%;
-  height: 24px;
   font-size: 1rem;
 `
 

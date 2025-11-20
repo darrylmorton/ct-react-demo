@@ -24,7 +24,6 @@ build
 *.sln
 *.sw?
 
-
 *storybook.log
 storybook-static
-/coverage/
+coverage
