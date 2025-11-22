@@ -11,10 +11,17 @@ function Signup() {
 }
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  padding: 32px;
+  //display: block;
+  //flex-direction: column;
+
+  //justify-content: center;
+  //text-align: center;
+  //padding: 32px;
+  padding: 8px;
+
+  //@media (min-width: 420px) {
+  //  flex-direction: row;
+  //}
 `
 
 export default Signup

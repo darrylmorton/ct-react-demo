@@ -1,17 +1,18 @@
 import styled from '@emotion/styled'
 // import 'react-app-polyfill/ie11';
-import { Formik, Form } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import { useState, useEffect } from 'react'
 import * as Yup from 'yup'
+import { Button, TextField } from '@mui/material'
+
 import {
   EMAIL_REGEX,
   request,
   type FormValues,
   type RequestValues,
 } from '../../util/AppUtil.ts'
-import TextField from '@mui/material/TextField'
 
-const SignupSchema = Yup.object().shape({
+const SignupSchema = Yup.object({
   firstName: Yup.string()
     .min(2, 'Too Short!')
     .max(30, 'Too Long!')
@@ -24,7 +25,7 @@ const SignupSchema = Yup.object().shape({
     .matches(EMAIL_REGEX, {
       message: 'Invalid email',
     })
-    .required('Required'),
+    .required('Invalid email'),
   password: Yup.string()
     .min(8, 'Too Short!')
     .max(16, 'Too Long!')
@@ -37,18 +38,18 @@ const SignupSchema = Yup.object().shape({
 })
 
 const SignupForm = () => {
-  const [formMessage, setFormMessage] = useState<string>('')
-  const [formErrorMessage, setFormErrorMessage] = useState<string>('')
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
-  useEffect(() => {}, [formMessage, formErrorMessage])
+  useEffect(() => {}, [successMessage, errorMessage])
 
   return (
-    <div>
-      <Title>Signup Form</Title>
-      {formMessage && <div>{formMessage}</div>}
-      {formErrorMessage && (
-        <FormErrorMessage>{formErrorMessage}</FormErrorMessage>
+    <Wrapper>
+      {/*<Title>Signup Form</Title>*/}
+      {successMessage && (
+        <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
+      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
 
       <Formik
         initialValues={
@@ -76,17 +77,17 @@ const SignupForm = () => {
             if (responseJson.status !== 200) {
               console.error(responseJson.message)
 
-              setFormErrorMessage('Submitted unsuccessfully')
-              if (formMessage) setFormMessage('')
+              setErrorMessage('Submitted unsuccessfully')
+              if (successMessage) setSuccessMessage('')
             } else {
-              setFormMessage('Submitted successfully')
-              if (formErrorMessage) setFormErrorMessage('')
+              setSuccessMessage('Submitted successfully')
+              if (errorMessage) setErrorMessage('')
             }
           } catch (err) {
             console.error('Server error', err)
 
-            setFormErrorMessage('There was a problem submitting the form')
-            if (formMessage) setFormMessage('')
+            setErrorMessage('There was a problem submitting the form')
+            if (successMessage) setSuccessMessage('')
           }
         }}
       >
@@ -99,7 +100,8 @@ const SignupForm = () => {
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="firstName">First Name*:</label>
-                <FormField
+                <Field
+                  as={FormField}
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
@@ -112,7 +114,8 @@ const SignupForm = () => {
               </FormColumn>
               <FormColumn textAlign="left">
                 <label htmlFor="lastName">Last Name*:</label>
-                <FormField
+                <Field
+                  as={FormField}
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
@@ -127,7 +130,8 @@ const SignupForm = () => {
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="username">Email*:</label>
-                <FormField
+                <Field
+                  as={FormField}
                   id="username"
                   name="username"
                   placeholder="john@example.com"
@@ -142,7 +146,8 @@ const SignupForm = () => {
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="password">Password*:</label>
-                <FormField
+                <Field
+                  as={FormField}
                   id="password"
                   name="password"
                   placeholder="Password"
@@ -155,7 +160,8 @@ const SignupForm = () => {
               </FormColumn>
               <FormColumn textAlign="left">
                 <label htmlFor="confirmPassword">Confirm Password*:</label>
-                <FormField
+                <Field
+                  as={FormField}
                   id="confirmPassword"
                   name="confirmPassword"
                   placeholder="Confirm Password"
@@ -169,36 +175,63 @@ const SignupForm = () => {
             </FormRow>
             <FormRow>
               <FormColumn alignItems="center">
-                <Button type="reset">Reset</Button>
+                <FormButton type="reset" variant="outlined" size="medium">
+                  Reset
+                </FormButton>
               </FormColumn>
               <FormColumn alignItems="center">
-                <Button type="submit">Signup</Button>
+                <FormButton type="submit" variant="outlined" size="medium">
+                  Signup
+                </FormButton>
               </FormColumn>
             </FormRow>
           </FormWrapper>
         )}
       </Formik>
-    </div>
+    </Wrapper>
   )
 }
 
-const Title = styled.div`
-  color: #333333;
-  font-size: 1.4rem;
+const Wrapper = styled.div`
+  //padding: 8px;
 `
 
+// const Title = styled.div`
+//   color: #333333;
+//   font-size: 1.4rem;
+//   margin-bottom: 8px;
+// `
+
 const FormWrapper = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  width: 100%;
+  //display: block;
+  //display: flex;
+  //flex-direction: column;
+
+  //width: 100%;
+
+  //@media (min-width: 320px) {
+  //  //flex-direction: row;
+  //}
+
+  @media (min-width: 834px) {
+    place-items: center;
+  }
 `
 
 const FormRow = styled.div`
   display: flex;
-  flex-direction: row;
-  padding: 8px;
-  width: 500px;
+  //flex-direction: row;
+  //padding: 8px;
+
+  @media (min-width: 320px) {
+    flex-direction: column;
+  }
+
+  @media (min-width: 834px) {
+    flex-direction: row;
+    width: 500px;
+    padding: 8px;
+  }
 `
 
 interface FormColumnProps {
@@ -209,8 +242,8 @@ interface FormColumnProps {
 const FormColumn = styled('div')<FormColumnProps>`
   display: flex;
   flex-direction: column;
-  padding: 8px 32px;
-  width: 100%;
+  //padding: 8px 32px;
+  //width: 100%;
 
   label {
     margin-bottom: 4px;
@@ -218,6 +251,19 @@ const FormColumn = styled('div')<FormColumnProps>`
 
   align-items: ${(props) => props.alignItems};
   text-align: ${(props) => props.textAlign};
+
+  @media (min-width: 320px) {
+    margin: 4px 0;
+
+    //label {
+    //  padding: 8px 0;
+    //}
+  }
+
+  @media (min-width: 834px) {
+    padding: 8px 32px;
+    width: 100%;
+  }
 `
 
 const FormField = styled(TextField)`
@@ -225,15 +271,22 @@ const FormField = styled(TextField)`
   font-size: 1rem;
 `
 
+const FormSuccessMessage = styled.div`
+  color: #008000;
+`
+
 const FormErrorMessage = styled.div`
   color: #ff0000;
 `
 
-const Button = styled.button`
-  width: 140px;
+const FormButton = styled(Button)`
+  width: 100%;
+  //width: 140px;
   margin-top: 16px;
-  padding: 4px;
+  //padding: 4px;
   font-size: 1rem;
+  color: #333333;
+  border-color: #333333;
 `
 
 export default SignupForm

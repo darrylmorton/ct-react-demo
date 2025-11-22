@@ -1,5 +1,9 @@
+// export const EMAIL_REGEX = new RegExp(
+//   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/gm
+// )
+
 export const EMAIL_REGEX = new RegExp(
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/gm
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/g
 )
 
 export interface RequestValues {
@@ -15,6 +19,8 @@ export interface FormValues extends RequestValues {
 
 // TODO envs
 export const request = async (requestValues: RequestValues) => {
+  console.log('REQUEST_VALUES', requestValues)
+
   return await fetch('http://localhost:3001/api/signup', {
     mode: 'no-cors',
     method: 'POST',

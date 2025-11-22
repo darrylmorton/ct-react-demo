@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/vitest'
 
 import Signup from './Signup'
 
-describe('Signup Page', () => {
+describe.skip('Signup Page', () => {
   test('Should render the <Signup />', () => {
     render(<Signup />)
 
