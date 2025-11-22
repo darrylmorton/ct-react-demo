@@ -10,7 +10,7 @@ import {
   request,
   type FormValues,
   type RequestValues,
-} from '../../util/AppUtil.ts'
+} from '../../util/AppUtil'
 
 const SignupSchema = Yup.object({
   firstName: Yup.string()
@@ -25,7 +25,7 @@ const SignupSchema = Yup.object({
     .matches(EMAIL_REGEX, {
       message: 'Invalid email',
     })
-    .required('Invalid email'),
+    .required('Required'),
   password: Yup.string()
     .min(8, 'Too Short!')
     .max(16, 'Too Long!')
