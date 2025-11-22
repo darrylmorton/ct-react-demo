@@ -52,7 +52,7 @@ describe('Signup Form', () => {
   test('Submits form unsuccessfully with valid inputs', async () => {
     const spy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
       json: async () => ({ status: 400 }),
-    } as unknown as Response)
+    } as Response)
 
     render(<SignupForm />)
 
@@ -84,7 +84,7 @@ describe('Signup Form', () => {
   test('Submits form successfully with valid inputs', async () => {
     const spy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
       json: async () => ({ status: 200 }),
-    } as unknown as Response)
+    } as Response)
 
     render(<SignupForm />)
 

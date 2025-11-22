@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, within, userEvent, screen, fireEvent } from 'storybook/test'
+import {
+  expect,
+  within,
+  userEvent,
+  screen,
+  fireEvent,
+  mocked,
+} from 'storybook/test'
 
 import Signup from '../Pages/Signup'
 import { request, type RequestValues } from '../util/AppUtil.ts'
-import * as AppUtil from '../util/AppUtil.ts'
-import { vi } from 'vitest'
 
 const meta = {
   title: 'Signup/Page',
@@ -25,6 +30,7 @@ export const SignupPageInvalid: Story = {
     await expect(signupButton).toBeInTheDocument()
 
     await userEvent.click(signupButton)
+
     expect(await screen.findAllByText('Required')).toHaveLength(4)
     expect(
       await screen.findByText('Passwords do not match')
@@ -34,9 +40,11 @@ export const SignupPageInvalid: Story = {
 
 export const SignupPageUnsuccessful: Story = {
   beforeEach: async () => {
-    vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
-      json: async () => ({ status: 400 }),
-    } as unknown as Response)
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return await Promise.resolve({ message: 'Error 400', status: 400 })
+      },
+    } as Response)
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
@@ -104,24 +112,25 @@ export const SignupPageReset: Story = {
 
     await userEvent.click(resetButton)
 
-    expect(screen.findByText('Required')).toEqual(Promise.resolve({}))
-    expect(screen.findByText('Passwords do not match')).toEqual(
-      Promise.resolve({})
+    expect(screen.queryByPlaceholderText('First Name')).toHaveTextContent('')
+    expect(screen.queryByPlaceholderText('Last Name')).toHaveTextContent('')
+    expect(screen.queryByPlaceholderText('john@example.com')).toHaveTextContent(
+      ''
     )
-
-    expect(screen.findByText('First Name')).toEqual(Promise.resolve({}))
-    expect(screen.findByText('Last Name')).toEqual(Promise.resolve({}))
-    expect(screen.findByText('Username')).toEqual(Promise.resolve({}))
-    expect(screen.findByText('Password')).toEqual(Promise.resolve({}))
-    expect(screen.findByText('Confirm Password')).toEqual(Promise.resolve({}))
+    expect(screen.queryByPlaceholderText('Password')).toHaveTextContent('')
+    expect(screen.queryByPlaceholderText('Confirm Password')).toHaveTextContent(
+      ''
+    )
   },
 }
 
 export const SignupPageError: Story = {
   beforeEach: async () => {
-    vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
-      json: () => Promise.reject({ status: 500 }),
-    } as Response)
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return await Promise.reject({ message: 'Error 500', status: 500 })
+      },
+    } as unknown as Response)
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
@@ -164,8 +173,10 @@ export const SignupPageError: Story = {
 
 export const SignupPageSuccessful: Story = {
   beforeEach: async () => {
-    vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
-      json: () => Promise.resolve({ status: 200 }),
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return await Promise.resolve({ message: 'success', status: 200 })
+      },
     } as Response)
   },
   play: async ({ canvasElement }) => {

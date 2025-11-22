@@ -45,7 +45,6 @@ const SignupForm = () => {
 
   return (
     <Wrapper>
-      {/*<Title>Signup Form</Title>*/}
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
@@ -273,10 +272,14 @@ const FormField = styled(TextField)`
 
 const FormSuccessMessage = styled.div`
   color: #008000;
+  text-align: center;
+  font-size: 1.1rem;
 `
 
 const FormErrorMessage = styled.div`
   color: #ff0000;
+  text-align: center;
+  font-size: 1.1rem;
 `
 
 const FormButton = styled(Button)`
