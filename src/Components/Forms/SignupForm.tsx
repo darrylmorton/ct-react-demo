@@ -62,6 +62,10 @@ const SignupForm = () => {
           } as FormValues
         }
         validationSchema={SignupSchema}
+        onReset={() => {
+          if (successMessage) setSuccessMessage('')
+          if (errorMessage) setErrorMessage('')
+        }}
         onSubmit={async (values: FormValues) => {
           const response = await request({
             firstName: values.firstName,
@@ -198,27 +202,9 @@ const SignupForm = () => {
   )
 }
 
-const Wrapper = styled.div`
-  //padding: 8px;
-`
-
-// const Title = styled.div`
-//   color: #333333;
-//   font-size: 1.4rem;
-//   margin-bottom: 8px;
-// `
+const Wrapper = styled.div``
 
 const FormWrapper = styled(Form)`
-  //display: block;
-  //display: flex;
-  //flex-direction: column;
-  //text-align: left;
-  //width: 100%;
-
-  //@media (min-width: 320px) {
-  //  //flex-direction: row;
-  //}
-
   @media (min-width: 834px) {
     place-items: center;
   }
@@ -226,9 +212,6 @@ const FormWrapper = styled(Form)`
 
 const FormRow = styled.div`
   display: flex;
-  //flex-direction: row;
-  //padding: 8px;
-  //text-align: left;
 
   @media (min-width: 320px) {
     flex-direction: column;
@@ -249,8 +232,6 @@ interface FormColumnProps {
 const FormColumn = styled('div')<FormColumnProps>`
   display: flex;
   flex-direction: column;
-  //padding: 8px 32px;
-  //width: 100%;
 
   label {
     margin-bottom: 4px;
@@ -261,10 +242,6 @@ const FormColumn = styled('div')<FormColumnProps>`
 
   @media (min-width: 320px) {
     margin: 4px 0;
-
-    //label {
-    //  padding: 8px 0;
-    //}
   }
 
   @media (min-width: 834px) {
@@ -292,15 +269,11 @@ const FormErrorMessage = styled.div`
 
 const FormValidationMessage = styled.div`
   color: #ff0000;
-  //text-align: center;
-  //font-size: 1.1rem;
 `
 
 const FormButton = styled(Button)`
   width: 100%;
-  //width: 140px;
   margin-top: 16px;
-  //padding: 4px;
   font-size: 1rem;
   color: #333333;
   border-color: #333333;
