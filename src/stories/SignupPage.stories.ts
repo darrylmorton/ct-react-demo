@@ -9,7 +9,7 @@ import {
 } from 'storybook/test'
 
 import Signup from '../Pages/Signup'
-import { request, type RequestValues } from '../util/AppUtil.ts'
+import { request, type SignupRequestValues } from '../util/AppUtil.ts'
 
 const meta = {
   title: 'Signup/Page',
@@ -42,7 +42,7 @@ export const SignupPageUnsuccessful: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
       json: async () => {
-        return await Promise.resolve({ message: 'Error 400', status: 400 })
+        return Promise.resolve({ message: 'Error 400', status: 400 })
       },
     } as Response)
   },
@@ -72,12 +72,12 @@ export const SignupPageUnsuccessful: Story = {
 
     await userEvent.click(signupButton)
 
-    await expect(request).toHaveBeenCalledWith({
+    await expect(request).toHaveBeenCalledWith('signup', {
       firstName: 'John',
       lastName: 'Doe',
       username: 'john@example.com',
       password: 'password123',
-    } as RequestValues)
+    } as SignupRequestValues)
 
     expect(
       await screen.findByText('Submitted unsuccessfully')
@@ -128,7 +128,7 @@ export const SignupPageError: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
       json: async () => {
-        return await Promise.reject({ message: 'Error 500', status: 500 })
+        return Promise.reject({ message: 'Error 500', status: 500 })
       },
     } as unknown as Response)
   },
@@ -158,12 +158,12 @@ export const SignupPageError: Story = {
 
     await userEvent.click(signupButton)
 
-    await expect(request).toHaveBeenCalledWith({
+    await expect(request).toHaveBeenCalledWith('signup', {
       firstName: 'John',
       lastName: 'Doe',
       username: 'john@example.com',
       password: 'password123',
-    } as RequestValues)
+    } as SignupRequestValues)
 
     expect(
       await screen.findByText('There was a problem submitting the form')
@@ -175,7 +175,7 @@ export const SignupPageSuccessful: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
       json: async () => {
-        return await Promise.resolve({ message: 'success', status: 200 })
+        return Promise.resolve({ status: 200 })
       },
     } as Response)
   },
@@ -205,12 +205,12 @@ export const SignupPageSuccessful: Story = {
 
     await userEvent.click(signupButton)
 
-    await expect(request).toHaveBeenCalledWith({
+    await expect(request).toHaveBeenCalledWith('signup', {
       firstName: 'John',
       lastName: 'Doe',
       username: 'john@example.com',
       password: 'password123',
-    } as RequestValues)
+    } as SignupRequestValues)
 
     expect(
       await screen.findByText('Submitted successfully')

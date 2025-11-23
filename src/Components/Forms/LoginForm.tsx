@@ -8,37 +8,23 @@ import { Button, TextField } from '@mui/material'
 import {
   EMAIL_REGEX,
   request,
-  type SignupFormValues,
   API_URL,
-  type SignupRequestValues,
+  type LoginRequestValues,
 } from '../../util/AppUtil'
 
-const SignupSchema = Yup.object({
-  firstName: Yup.string()
-    .min(2, 'Too Short!')
-    .max(30, 'Too Long!')
-    .required('Required'),
-  lastName: Yup.string()
-    .min(2, 'Too Short!')
-    .max(30, 'Too Long!')
-    .required('Required'),
+const LoginSchema = Yup.object({
   username: Yup.string()
     .matches(EMAIL_REGEX, {
-      message: 'Invalid email',
+      message: 'Required',
     })
     .required('Required'),
   password: Yup.string()
-    .min(8, 'Too Short!')
-    .max(16, 'Too Long!')
+    .min(8, 'Required')
+    .max(16, 'Required')
     .required('Required'),
-  confirmPassword: Yup.string()
-    .min(8, 'Too Short!')
-    .max(16, 'Too Long!')
-    .equals([Yup.ref('password')], 'Passwords do not match')
-    .required('Passwords do not match'),
 })
 
-const SignupForm = () => {
+const LoginForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -54,25 +40,20 @@ const SignupForm = () => {
       <Formik
         initialValues={
           {
-            firstName: '',
-            lastName: '',
             username: '',
             password: '',
-            confirmPassword: '',
-          } as SignupFormValues
+          } as LoginRequestValues
         }
-        validationSchema={SignupSchema}
+        validationSchema={LoginSchema}
         onReset={() => {
           if (successMessage) setSuccessMessage('')
           if (errorMessage) setErrorMessage('')
         }}
-        onSubmit={async (values: SignupFormValues) => {
-          const response = await request('signup', {
-            firstName: values.firstName,
-            lastName: values.lastName,
+        onSubmit={async (values: LoginRequestValues) => {
+          const response = await request('login', {
             username: values.username,
             password: values.password,
-          } as SignupRequestValues)
+          } as LoginRequestValues)
 
           try {
             const responseJson = await response.json()
@@ -83,9 +64,13 @@ const SignupForm = () => {
 
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
-            } else {
+            } else if (responseJson.status === 200 && responseJson.token) {
+              localStorage.setItem('token', responseJson.token)
+
               setSuccessMessage('Submitted successfully')
               if (errorMessage) setErrorMessage('')
+            } else {
+              throw new Error('Request error')
             }
           } catch (err) {
             console.error('Server error', err)
@@ -96,41 +81,7 @@ const SignupForm = () => {
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper id="signupForm" method="POST" action={API_URL}>
-            <FormRow>
-              <FormColumn textAlign="left">
-                <label htmlFor="firstName">First Name*:</label>
-                <Field
-                  as={FormField}
-                  id="firstName"
-                  name="firstName"
-                  placeholder="First Name"
-                  variant="outlined"
-                  size="small"
-                />
-                {errors.firstName && touched.firstName ? (
-                  <FormValidationMessage>
-                    {errors.firstName}
-                  </FormValidationMessage>
-                ) : null}
-              </FormColumn>
-              <FormColumn textAlign="left">
-                <label htmlFor="lastName">Last Name*:</label>
-                <Field
-                  as={FormField}
-                  id="lastName"
-                  name="lastName"
-                  placeholder="Last Name"
-                  variant="outlined"
-                  size="small"
-                />
-                {errors.lastName && touched.lastName ? (
-                  <FormValidationMessage>
-                    {errors.lastName}
-                  </FormValidationMessage>
-                ) : null}
-              </FormColumn>
-            </FormRow>
+          <FormWrapper id="loginForm" method="POST" action={API_URL}>
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="username">Email*:</label>
@@ -148,8 +99,6 @@ const SignupForm = () => {
                   </FormValidationMessage>
                 ) : null}
               </FormColumn>
-            </FormRow>
-            <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="password">Password*:</label>
                 <Field
@@ -166,22 +115,6 @@ const SignupForm = () => {
                   </FormValidationMessage>
                 ) : null}
               </FormColumn>
-              <FormColumn textAlign="left">
-                <label htmlFor="confirmPassword">Confirm Password*:</label>
-                <Field
-                  as={FormField}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  variant="outlined"
-                  size="small"
-                />
-                {errors.confirmPassword && touched.confirmPassword ? (
-                  <FormValidationMessage>
-                    {errors.confirmPassword}
-                  </FormValidationMessage>
-                ) : null}
-              </FormColumn>
             </FormRow>
             <FormRow>
               <FormColumn alignItems="center">
@@ -191,7 +124,7 @@ const SignupForm = () => {
               </FormColumn>
               <FormColumn alignItems="center">
                 <FormButton type="submit" variant="outlined" size="medium">
-                  Signup
+                  Login
                 </FormButton>
               </FormColumn>
             </FormRow>
@@ -279,4 +212,4 @@ const FormButton = styled(Button)`
   border-color: #333333;
 `
 
-export default SignupForm
+export default LoginForm
