@@ -5,5 +5,8 @@
     { "path": "./tsconfig.node.json" }
   ],
   //  "types": ["vitest/globals"]
-  "compilerOptions": { "strictNullChecks": true, "strictFunctionTypes": false }
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
+  }
 }

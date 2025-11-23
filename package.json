@@ -4,19 +4,19 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "NODE_ENV=development vite",
+    "build": "NODE_ENV=production tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test": "vitest",
-    "test:unit-coverage": "vitest run --coverage",
-    "test:watch": "vitest --watch",
-    "test:browser": "vitest --browser"
+    "preview": "NODE_ENV=production vite preview",
+    "storybook": "NODE_ENV=development storybook dev -p 6006",
+    "build-storybook": "NODE_ENV=development storybook build",
+    "test": "NODE_ENV=development vitest",
+    "test:unit-coverage": "NODE_ENV=development vitest run --coverage",
+    "test:watch": "NODE_ENV=development vitest --watch",
+    "test:browser": "NODE_ENV=development vitest --browser"
   },
   "dependencies": {
     "@emotion/styled": "^11.14.1",

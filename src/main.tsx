@@ -6,6 +6,18 @@ import './index.css'
 import Login from './Pages/Login.tsx'
 import Signup from './Pages/Signup.tsx'
 import Home from './Pages/Home.tsx'
+// import type { RequestModeType } from './util/AppUtil.ts'
+
+// switch (process.env.NODE_ENV) {
+//   case 'production':
+//     process.env.REACT_APP_SERVICE_HOSTNAME = 'https://example.com'
+//     process.env.REACT_APP_CORS_MODE = 'cors' as RequestModeType
+//     break
+//   case 'development':
+//     process.env.REACT_APP_SERVICE_HOSTNAME = 'http://dev.example.com'
+//     process.env.REACT_APP_CORS_MODE = 'cors' as RequestModeType
+//     break
+// }
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>

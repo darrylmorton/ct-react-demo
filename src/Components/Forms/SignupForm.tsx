@@ -10,6 +10,7 @@ import {
   request,
   type FormValues,
   type RequestValues,
+  API_URL,
 } from '../../util/AppUtil'
 
 const SignupSchema = Yup.object({
@@ -91,11 +92,7 @@ const SignupForm = () => {
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper
-            id="signupForm"
-            method="POST"
-            action="http://localhost:3001/api/signup"
-          >
+          <FormWrapper id="signupForm" method="POST" action={API_URL}>
             <FormRow>
               <FormColumn textAlign="left">
                 <label htmlFor="firstName">First Name*:</label>
@@ -108,7 +105,9 @@ const SignupForm = () => {
                   size="small"
                 />
                 {errors.firstName && touched.firstName ? (
-                  <FormErrorMessage>{errors.firstName}</FormErrorMessage>
+                  <FormValidationMessage>
+                    {errors.firstName}
+                  </FormValidationMessage>
                 ) : null}
               </FormColumn>
               <FormColumn textAlign="left">
@@ -122,7 +121,9 @@ const SignupForm = () => {
                   size="small"
                 />
                 {errors.lastName && touched.lastName ? (
-                  <FormErrorMessage>{errors.lastName}</FormErrorMessage>
+                  <FormValidationMessage>
+                    {errors.lastName}
+                  </FormValidationMessage>
                 ) : null}
               </FormColumn>
             </FormRow>
@@ -138,7 +139,9 @@ const SignupForm = () => {
                   size="small"
                 />
                 {errors.username && touched.username ? (
-                  <FormErrorMessage>{errors.username}</FormErrorMessage>
+                  <FormValidationMessage>
+                    {errors.username}
+                  </FormValidationMessage>
                 ) : null}
               </FormColumn>
             </FormRow>
@@ -154,7 +157,9 @@ const SignupForm = () => {
                   size="small"
                 />
                 {errors.password && touched.password ? (
-                  <FormErrorMessage>{errors.password}</FormErrorMessage>
+                  <FormValidationMessage>
+                    {errors.password}
+                  </FormValidationMessage>
                 ) : null}
               </FormColumn>
               <FormColumn textAlign="left">
@@ -168,7 +173,9 @@ const SignupForm = () => {
                   size="small"
                 />
                 {errors.confirmPassword && touched.confirmPassword ? (
-                  <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
+                  <FormValidationMessage>
+                    {errors.confirmPassword}
+                  </FormValidationMessage>
                 ) : null}
               </FormColumn>
             </FormRow>
@@ -205,7 +212,7 @@ const FormWrapper = styled(Form)`
   //display: block;
   //display: flex;
   //flex-direction: column;
-
+  //text-align: left;
   //width: 100%;
 
   //@media (min-width: 320px) {
@@ -221,6 +228,7 @@ const FormRow = styled.div`
   display: flex;
   //flex-direction: row;
   //padding: 8px;
+  //text-align: left;
 
   @media (min-width: 320px) {
     flex-direction: column;
@@ -280,6 +288,12 @@ const FormErrorMessage = styled.div`
   color: #ff0000;
   text-align: center;
   font-size: 1.1rem;
+`
+
+const FormValidationMessage = styled.div`
+  color: #ff0000;
+  //text-align: center;
+  //font-size: 1.1rem;
 `
 
 const FormButton = styled(Button)`
