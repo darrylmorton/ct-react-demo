@@ -11,7 +11,7 @@ import {
   type SignupFormValues,
   API_URL,
   type SignupRequestValues,
-} from '../../util/AppUtil'
+} from '../../utils/AppUtil'
 
 const SignupSchema = Yup.object({
   firstName: Yup.string()

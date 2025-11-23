@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
 import LoginForm from './LoginForm'
-import * as AppUtil from '../../util/AppUtil'
+import * as AppUtil from '../../utils/AppUtil'
 
 describe('Login Form', () => {
   test.skip('Should render the <LoginForm />', () => {
@@ -59,7 +59,7 @@ describe('Login Form', () => {
     spy.mockRestore()
   })
 
-  test('Submits form unsuccessfully with invalid token response', async () => {
+  test('Submits form unsuccessfully with invalid authToken response', async () => {
     const spy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
       json: async () => ({
         status: 200,
@@ -88,7 +88,7 @@ describe('Login Form', () => {
     const appUtilSpy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
       json: async () => ({
         status: 200,
-        token:
+        authToken:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       }),
     } as Response)
@@ -113,7 +113,7 @@ describe('Login Form', () => {
     appUtilSpy.mockRestore()
 
     expect(localStorageSpy).toHaveBeenCalledWith(
-      'token',
+      'authToken',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
     )
 

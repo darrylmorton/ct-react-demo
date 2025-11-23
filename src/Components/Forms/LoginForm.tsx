@@ -10,7 +10,7 @@ import {
   request,
   API_URL,
   type LoginRequestValues,
-} from '../../util/AppUtil'
+} from '../../utils/AppUtil'
 
 const LoginSchema = Yup.object({
   username: Yup.string()
@@ -57,15 +57,13 @@ const LoginForm = () => {
 
           try {
             const responseJson = await response.json()
-            console.log('responseJson.status', responseJson.status)
+            localStorage.setItem('authToken', responseJson.authToken)
 
             if (responseJson.status !== 200) {
-              console.error(responseJson.message)
-
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
-            } else if (responseJson.status === 200 && responseJson.token) {
-              localStorage.setItem('token', responseJson.token)
+            } else if (responseJson.status === 200 && responseJson.authToken) {
+              localStorage.setItem('authToken', responseJson.authToken)
 
               setSuccessMessage('Submitted successfully')
               if (errorMessage) setErrorMessage('')

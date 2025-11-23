@@ -6,11 +6,11 @@ import {
   screen,
   fireEvent,
   mocked,
+  spyOn,
 } from 'storybook/test'
-import { vi } from 'vitest'
 
 import Login from '../Pages/Login'
-import { request, type LoginRequestValues } from '../util/AppUtil.ts'
+import { request, type LoginRequestValues } from '../utils/AppUtil'
 
 const meta = {
   title: 'Login/Page',
@@ -175,14 +175,15 @@ export const LoginPageSuccessful: Story = {
       json: async () => {
         return Promise.resolve({
           status: 200,
-          token:
+          authToken:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
         })
       },
     } as Response)
-    vi.spyOn(Storage.prototype, 'setItem')
   },
   play: async ({ canvasElement }) => {
+    const spy = spyOn(Storage.prototype, 'setItem')
+
     const canvas = within(canvasElement)
 
     const resetButton = canvas.getByText('Reset')
@@ -209,10 +210,10 @@ export const LoginPageSuccessful: Story = {
     ).toBeInTheDocument()
 
     expect(localStorage.setItem).toHaveBeenCalledWith(
-      'token',
+      'authToken',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
     )
 
-    vi.resetAllMocks()
+    spy.mockRestore()
   },
 }

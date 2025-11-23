@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
 import SignupForm from './SignupForm'
-import * as AppUtil from '../../util/AppUtil'
+import * as AppUtil from '../../utils/AppUtil'
 
 describe('Signup Form', () => {
   test.skip('Should render the <SignupForm />', () => {

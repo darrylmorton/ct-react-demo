@@ -9,7 +9,7 @@ import {
 } from 'storybook/test'
 
 import Signup from '../Pages/Signup'
-import { request, type SignupRequestValues } from '../util/AppUtil.ts'
+import { request, type SignupRequestValues } from '../utils/AppUtil.ts'
 
 const meta = {
   title: 'Signup/Page',
