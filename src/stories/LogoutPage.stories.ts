@@ -1,0 +1,102 @@
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, within, userEvent, screen, mocked } from 'storybook/test'
+
+import Logout from '../Pages/Logout'
+import { request } from '../utils/AppUtil'
+import { authToken } from '../helpers/AppHelper.tsx'
+
+const meta = {
+  title: 'Logout/Page',
+  component: Logout,
+} satisfies Meta<typeof Logout>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const LogoutPageUnsuccessfulUserNotLoggedIn: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    const logoutButton = canvas.getByText('Logout')
+    await expect(logoutButton).toBeInTheDocument()
+
+    await userEvent.click(logoutButton)
+
+    expect(await screen.findByText('User is not logged in')).toBeInTheDocument()
+  },
+}
+
+export const LoginPageResponseUnsuccessful: Story = {
+  beforeEach: async () => {
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return Promise.resolve({ status: 400 })
+      },
+    } as Response)
+
+    localStorage.setItem('authToken', authToken)
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    const logoutButton = canvas.getByText('Logout')
+    await expect(logoutButton).toBeInTheDocument()
+
+    await userEvent.click(logoutButton)
+
+    expect(
+      await screen.findByText('Submitted unsuccessfully')
+    ).toBeInTheDocument()
+  },
+}
+
+export const LoginPageError: Story = {
+  beforeEach: async () => {
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return Promise.reject({ message: 'Error 500', status: 500 })
+      },
+    } as unknown as Response)
+
+    localStorage.setItem('authToken', authToken)
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    const logoutButton = canvas.getByText('Logout')
+    await expect(logoutButton).toBeInTheDocument()
+
+    await userEvent.click(logoutButton)
+
+    expect(
+      await screen.findByText('There was a problem submitting the form')
+    ).toBeInTheDocument()
+  },
+}
+
+export const LoginPageSuccessful: Story = {
+  beforeEach: async () => {
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return Promise.resolve({
+          status: 200,
+          authToken,
+        })
+      },
+    } as Response)
+
+    localStorage.setItem('authToken', authToken)
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    const loginButton = canvas.getByText('Logout')
+    await expect(loginButton).toBeInTheDocument()
+
+    await userEvent.click(loginButton)
+
+    expect(
+      await screen.findByText('Submitted successfully')
+    ).toBeInTheDocument()
+  },
+}

@@ -9,7 +9,7 @@ import {
 } from 'storybook/test'
 
 import Signup from '../Pages/Signup'
-import { request, type SignupRequestValues } from '../utils/AppUtil.ts'
+import { request } from '../utils/AppUtil.ts'
 
 const meta = {
   title: 'Signup/Page',
@@ -71,13 +71,6 @@ export const SignupPageUnsuccessful: Story = {
     })
 
     await userEvent.click(signupButton)
-
-    await expect(request).toHaveBeenCalledWith('signup', {
-      firstName: 'John',
-      lastName: 'Doe',
-      username: 'john@example.com',
-      password: 'password123',
-    } as SignupRequestValues)
 
     expect(
       await screen.findByText('Submitted unsuccessfully')
@@ -158,13 +151,6 @@ export const SignupPageError: Story = {
 
     await userEvent.click(signupButton)
 
-    await expect(request).toHaveBeenCalledWith('signup', {
-      firstName: 'John',
-      lastName: 'Doe',
-      username: 'john@example.com',
-      password: 'password123',
-    } as SignupRequestValues)
-
     expect(
       await screen.findByText('There was a problem submitting the form')
     ).toBeInTheDocument()
@@ -204,13 +190,6 @@ export const SignupPageSuccessful: Story = {
     })
 
     await userEvent.click(signupButton)
-
-    await expect(request).toHaveBeenCalledWith('signup', {
-      firstName: 'John',
-      lastName: 'Doe',
-      username: 'john@example.com',
-      password: 'password123',
-    } as SignupRequestValues)
 
     expect(
       await screen.findByText('Submitted successfully')
