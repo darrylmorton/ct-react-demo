@@ -1,20 +1,28 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Route, Routes } from 'react-router'
 
 import './App.css'
 import './index.css'
-import Login from './Pages/Login.tsx'
-import Signup from './Pages/Signup.tsx'
-import Home from './Pages/Home.tsx'
-import Logout from './Pages/Logout.tsx'
+import Login from './Pages/Login'
+import Signup from './Pages/Signup'
+import Home from './Pages/Home'
+import Logout from './Pages/Logout'
+import Profile from './Pages/Profile'
+import { AuthProvider } from './Pages/AuthProvider'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/logout" element={<Logout />} />
-      <Route path="/signup" element={<Signup />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+
+        <Route path="user">
+          <Route path="profile" element={<Profile />} />
+          <Route path="logout" element={<Logout />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   </BrowserRouter>
 )
