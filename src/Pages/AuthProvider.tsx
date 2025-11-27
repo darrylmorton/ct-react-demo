@@ -7,10 +7,10 @@ type User = {
 
 type AuthContextType = {
   user: User
-  token: string | null
+  authToken: string | null
   login: (username: string, firstName: string) => void
   logout: () => void
-  setAuthToken: (token: string) => void
+  authenticate: (authToken: string) => void
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return storedUser ? JSON.parse(storedUser) : null
   })
 
-  const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('token')
+  const [authToken, setAuthToken] = useState<string | null>(() => {
+    return localStorage.getItem('authToken')
   })
 
   const login = (username: string, firstName: string) => {
@@ -35,22 +35,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('user', JSON.stringify(userData))
   }
 
-  const setAuthToken = (authToken: string) => {
-    setToken(authToken)
+  const authenticate = (authToken: string) => {
+    setAuthToken(authToken)
 
-    localStorage.setItem('token', authToken)
+    localStorage.setItem('authToken', authToken)
   }
 
   const logout = () => {
     setUser(null)
-    setToken(null)
+    setAuthToken(null)
 
     localStorage.removeItem('user')
-    localStorage.removeItem('token')
+    localStorage.removeItem('authToken')
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, setAuthToken }}>
+    <AuthContext.Provider
+      value={{ user, authToken, login, logout, authenticate }}
+    >
       {children}
     </AuthContext.Provider>
   )

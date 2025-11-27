@@ -3,9 +3,9 @@ import { Navigate, Outlet } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 
 export const ProtectedRoutes = () => {
-  const { token } = useAuth()
+  const { authToken } = useAuth()
 
-  if (!token) {
+  if (!authToken) {
     return <Navigate to="/login" replace />
   }
 
