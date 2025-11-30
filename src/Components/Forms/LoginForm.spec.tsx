@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/vitest'
 
 import LoginForm from './LoginForm'
 import * as AppUtil from '../../utils/AppUtil'
+import { assertLoginPageElements, authToken } from '../../helpers/AppHelper.tsx'
 
 describe('Login Form', () => {
   test.skip('Should render the <LoginForm />', () => {
@@ -15,7 +16,9 @@ describe('Login Form', () => {
   test('Displays validation errors for empty required fields', async () => {
     render(<LoginForm />)
 
-    fireEvent.click(screen.getByText('Login'))
+    const { loginButton } = assertLoginPageElements()
+
+    fireEvent.click(loginButton)
 
     expect(await screen.findAllByText('Required')).toHaveLength(2)
   })
@@ -23,15 +26,18 @@ describe('Login Form', () => {
   test('Displays error for invalid fields', async () => {
     render(<LoginForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    const { usernameInput, passwordInput, loginButton } =
+      assertLoginPageElements()
+
+    fireEvent.change(usernameInput, {
       target: { value: 'invalid-email' },
     })
 
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'p' },
     })
 
-    fireEvent.click(screen.getByText('Login'))
+    fireEvent.click(loginButton)
 
     expect(await screen.findAllByText('Required')).toHaveLength(2)
   })
@@ -43,14 +49,17 @@ describe('Login Form', () => {
 
     render(<LoginForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    const { usernameInput, passwordInput, loginButton } =
+      assertLoginPageElements()
+
+    fireEvent.change(usernameInput, {
       target: { value: 'john.doe@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByText('Login'))
+    fireEvent.click(loginButton)
 
     expect(
       await screen.findByText('Submitted unsuccessfully')
@@ -68,14 +77,17 @@ describe('Login Form', () => {
 
     render(<LoginForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    const { usernameInput, passwordInput, loginButton } =
+      assertLoginPageElements()
+
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByText('Login'))
+    fireEvent.click(loginButton)
 
     expect(
       await screen.findByText('There was a problem submitting the form')
@@ -88,8 +100,7 @@ describe('Login Form', () => {
     const appUtilSpy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
       json: async () => ({
         status: 200,
-        authToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+        authToken,
       }),
     } as Response)
 
@@ -97,14 +108,17 @@ describe('Login Form', () => {
 
     render(<LoginForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    const { usernameInput, passwordInput, loginButton } =
+      assertLoginPageElements()
+
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByText('Login'))
+    fireEvent.click(loginButton)
 
     expect(
       await screen.findByText('Submitted successfully')
@@ -112,10 +126,7 @@ describe('Login Form', () => {
 
     appUtilSpy.mockRestore()
 
-    expect(localStorageSpy).toHaveBeenCalledWith(
-      'authToken',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-    )
+    expect(localStorageSpy).toHaveBeenCalledWith('authToken', authToken)
 
     localStorageSpy.mockRestore()
   })

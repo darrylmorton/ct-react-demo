@@ -272,11 +272,18 @@ const FormValidationMessage = styled.div`
 `
 
 const FormButton = styled(Button)`
-  width: 100%;
   margin-top: 16px;
   font-size: 1rem;
   color: #333333;
   border-color: #333333;
+
+  @media (min-width: 320px) {
+    width: 60%;
+  }
+
+  @media (min-width: 834px) {
+    width: 80%;
+  }
 `
 
 export default SignupForm

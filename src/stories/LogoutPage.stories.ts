@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, within, userEvent, screen, mocked } from 'storybook/test'
+import { expect, userEvent, screen, mocked } from 'storybook/test'
 
 import Logout from '../Pages/Logout'
 import { request } from '../utils/AppUtil'
 import { authToken } from '../helpers/AppHelper.tsx'
+import { assertStoryLogoutPageElements } from '../helpers/StoryHelper.tsx'
 
 const meta = {
   title: 'Logout/Page',
@@ -15,10 +16,7 @@ type Story = StoryObj<typeof meta>
 
 export const LogoutPageUnsuccessfulUserNotLoggedIn: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const logoutButton = canvas.getByText('Logout')
-    await expect(logoutButton).toBeInTheDocument()
+    const { logoutButton } = await assertStoryLogoutPageElements(canvasElement)
 
     await userEvent.click(logoutButton)
 
@@ -37,10 +35,7 @@ export const LoginPageResponseUnsuccessful: Story = {
     localStorage.setItem('authToken', authToken)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const logoutButton = canvas.getByText('Logout')
-    await expect(logoutButton).toBeInTheDocument()
+    const { logoutButton } = await assertStoryLogoutPageElements(canvasElement)
 
     await userEvent.click(logoutButton)
 
@@ -61,10 +56,7 @@ export const LoginPageError: Story = {
     localStorage.setItem('authToken', authToken)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const logoutButton = canvas.getByText('Logout')
-    await expect(logoutButton).toBeInTheDocument()
+    const { logoutButton } = await assertStoryLogoutPageElements(canvasElement)
 
     await userEvent.click(logoutButton)
 
@@ -88,12 +80,9 @@ export const LoginPageSuccessful: Story = {
     localStorage.setItem('authToken', authToken)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const { logoutButton } = await assertStoryLogoutPageElements(canvasElement)
 
-    const loginButton = canvas.getByText('Logout')
-    await expect(loginButton).toBeInTheDocument()
-
-    await userEvent.click(loginButton)
+    await userEvent.click(logoutButton)
 
     expect(
       await screen.findByText('Submitted successfully')

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   expect,
-  within,
   userEvent,
   screen,
   fireEvent,
@@ -11,6 +10,7 @@ import {
 
 import Login from '../Pages/Login'
 import { request, type LoginRequestValues } from '../utils/AppUtil'
+import { assertStoryLoginPageElements } from '../helpers/StoryHelper.tsx'
 
 const meta = {
   title: 'Login/Page',
@@ -23,12 +23,7 @@ type Story = StoryObj<typeof meta>
 // More on component testing: https://storybook.js.org/docs/writing-tests/interaction-testing
 export const LoginPageInvalid: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const loginButton = canvas.getByText('Login')
-    await expect(loginButton).toBeInTheDocument()
+    const { loginButton } = await assertStoryLoginPageElements(canvasElement)
 
     await userEvent.click(loginButton)
 
@@ -45,17 +40,13 @@ export const LoginPageUnsuccessful: Story = {
     } as Response)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const { usernameInput, passwordInput, loginButton } =
+      await assertStoryLoginPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const loginButton = canvas.getByText('Login')
-    await expect(loginButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 
@@ -81,17 +72,13 @@ export const LoginPageResponseUnsuccessful: Story = {
     } as Response)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const { usernameInput, passwordInput, loginButton } =
+      await assertStoryLoginPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const loginButton = canvas.getByText('Login')
-    await expect(loginButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 
@@ -108,31 +95,6 @@ export const LoginPageResponseUnsuccessful: Story = {
   },
 }
 
-export const LoginPageReset: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const loginButton = canvas.getByText('Login')
-    await expect(loginButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
-      target: { value: 'john@example.com' },
-    })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
-      target: { value: 'password123' },
-    })
-
-    await userEvent.click(resetButton)
-
-    expect(screen.queryByPlaceholderText('john@example.com')).toHaveTextContent(
-      ''
-    )
-    expect(screen.queryByPlaceholderText('Password')).toHaveTextContent('')
-  },
-}
-
 export const LoginPageError: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
@@ -142,17 +104,13 @@ export const LoginPageError: Story = {
     } as unknown as Response)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const { usernameInput, passwordInput, loginButton } =
+      await assertStoryLoginPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const loginButton = canvas.getByText('Login')
-    await expect(loginButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 
@@ -184,17 +142,13 @@ export const LoginPageSuccessful: Story = {
   play: async ({ canvasElement }) => {
     const spy = spyOn(Storage.prototype, 'setItem')
 
-    const canvas = within(canvasElement)
+    const { usernameInput, passwordInput, loginButton } =
+      await assertStoryLoginPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const loginButton = canvas.getByText('Login')
-    await expect(loginButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
 

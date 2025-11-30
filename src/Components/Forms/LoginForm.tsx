@@ -116,11 +116,6 @@ const LoginForm = () => {
             </FormRow>
             <FormRow>
               <FormColumn alignItems="center">
-                <FormButton type="reset" variant="outlined" size="medium">
-                  Reset
-                </FormButton>
-              </FormColumn>
-              <FormColumn alignItems="center">
                 <FormButton type="submit" variant="outlined" size="medium">
                   Login
                 </FormButton>
@@ -203,11 +198,18 @@ const FormValidationMessage = styled.div`
 `
 
 const FormButton = styled(Button)`
-  width: 100%;
   margin-top: 16px;
   font-size: 1rem;
   color: #333333;
   border-color: #333333;
+
+  @media (min-width: 320px) {
+    width: 60%;
+  }
+
+  @media (min-width: 834px) {
+    width: 50%;
+  }
 `
 
 export default LoginForm

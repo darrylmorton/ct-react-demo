@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/vitest'
 
 import SignupForm from './SignupForm'
 import * as AppUtil from '../../utils/AppUtil'
+import { assertSignupPageElements } from '../../helpers/AppHelper.tsx'
 
 describe('Signup Form', () => {
   test.skip('Should render the <SignupForm />', () => {
@@ -15,7 +16,9 @@ describe('Signup Form', () => {
   test('Displays validation errors for empty required fields', async () => {
     render(<SignupForm />)
 
-    fireEvent.click(screen.getByText('Signup'))
+    const { signupButton } = assertSignupPageElements()
+
+    fireEvent.click(signupButton)
 
     expect(await screen.findAllByText('Required')).toHaveLength(4)
     expect(screen.getByText('Passwords do not match')).toBeInTheDocument()
@@ -24,11 +27,13 @@ describe('Signup Form', () => {
   test('Displays error for invalid email format', async () => {
     render(<SignupForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    const { usernameInput, signupButton } = assertSignupPageElements()
+
+    fireEvent.change(usernameInput, {
       target: { value: 'invalid-email' },
     })
 
-    fireEvent.click(screen.getByText('Signup'))
+    fireEvent.click(signupButton)
 
     expect(await screen.findByText('Invalid email')).toBeInTheDocument()
   })
@@ -36,13 +41,16 @@ describe('Signup Form', () => {
   test('Displays error when passwords do not match', async () => {
     render(<SignupForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    const { passwordInput, confirmPasswordInput, signupButton } =
+      assertSignupPageElements()
+
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password456' },
     })
-    fireEvent.click(screen.getByText('Signup'))
+    fireEvent.click(signupButton)
 
     expect(
       await screen.findByText('Passwords do not match')
@@ -56,23 +64,32 @@ describe('Signup Form', () => {
 
     render(<SignupForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('First Name'), {
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      signupButton,
+    } = assertSignupPageElements()
+
+    fireEvent.change(firstNameInput, {
       target: { value: 'John' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Last Name'), {
+    fireEvent.change(lastNameInput, {
       target: { value: 'Doe' },
     })
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByText('Signup'))
+    fireEvent.click(signupButton)
 
     expect(
       await screen.findByText('Submitted unsuccessfully')
@@ -88,23 +105,32 @@ describe('Signup Form', () => {
 
     render(<SignupForm />)
 
-    fireEvent.change(screen.getByPlaceholderText('First Name'), {
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      signupButton,
+    } = assertSignupPageElements()
+
+    fireEvent.change(firstNameInput, {
       target: { value: 'John' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Last Name'), {
+    fireEvent.change(lastNameInput, {
       target: { value: 'Doe' },
     })
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByText('Signup'))
+    fireEvent.click(signupButton)
 
     expect(
       await screen.findByText('Submitted successfully')

@@ -1,15 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import {
-  expect,
-  within,
-  userEvent,
-  screen,
-  fireEvent,
-  mocked,
-} from 'storybook/test'
+import { expect, userEvent, screen, fireEvent, mocked } from 'storybook/test'
 
 import Signup from '../Pages/Signup'
 import { request } from '../utils/AppUtil.ts'
+import { assertStorySignupPageElements } from '../helpers/StoryHelper.tsx'
 
 const meta = {
   title: 'Signup/Page',
@@ -22,12 +16,7 @@ type Story = StoryObj<typeof meta>
 // More on component testing: https://storybook.js.org/docs/writing-tests/interaction-testing
 export const SignupPageInvalid: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const signupButton = canvas.getByText('Signup')
-    await expect(signupButton).toBeInTheDocument()
+    const { signupButton } = await assertStorySignupPageElements(canvasElement)
 
     await userEvent.click(signupButton)
 
@@ -47,26 +36,28 @@ export const SignupPageUnsuccessful: Story = {
     } as Response)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      signupButton,
+    } = await assertStorySignupPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const signupButton = canvas.getByText('Signup')
-    await expect(signupButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('First Name'), {
+    fireEvent.change(firstNameInput, {
       target: { value: 'John' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Last Name'), {
+    fireEvent.change(lastNameInput, {
       target: { value: 'Doe' },
     })
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password123' },
     })
 
@@ -80,40 +71,38 @@ export const SignupPageUnsuccessful: Story = {
 
 export const SignupPageReset: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      resetButton,
+    } = await assertStorySignupPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const signupButton = canvas.getByText('Signup')
-    await expect(signupButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('First Name'), {
+    fireEvent.change(firstNameInput, {
       target: { value: 'John' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Last Name'), {
+    fireEvent.change(lastNameInput, {
       target: { value: 'Doe' },
     })
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password123' },
     })
 
     await userEvent.click(resetButton)
 
-    expect(screen.queryByPlaceholderText('First Name')).toHaveTextContent('')
-    expect(screen.queryByPlaceholderText('Last Name')).toHaveTextContent('')
-    expect(screen.queryByPlaceholderText('john@example.com')).toHaveTextContent(
-      ''
-    )
-    expect(screen.queryByPlaceholderText('Password')).toHaveTextContent('')
-    expect(screen.queryByPlaceholderText('Confirm Password')).toHaveTextContent(
-      ''
-    )
+    expect(firstNameInput).toHaveTextContent('')
+    expect(lastNameInput).toHaveTextContent('')
+    expect(usernameInput).toHaveTextContent('')
+    expect(passwordInput).toHaveTextContent('')
+    expect(confirmPasswordInput).toHaveTextContent('')
   },
 }
 
@@ -126,26 +115,28 @@ export const SignupPageError: Story = {
     } as unknown as Response)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      signupButton,
+    } = await assertStorySignupPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const signupButton = canvas.getByText('Signup')
-    await expect(signupButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('First Name'), {
+    fireEvent.change(firstNameInput, {
       target: { value: 'John' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Last Name'), {
+    fireEvent.change(lastNameInput, {
       target: { value: 'Doe' },
     })
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password123' },
     })
 
@@ -166,26 +157,28 @@ export const SignupPageSuccessful: Story = {
     } as Response)
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const {
+      firstNameInput,
+      lastNameInput,
+      usernameInput,
+      passwordInput,
+      confirmPasswordInput,
+      signupButton,
+    } = await assertStorySignupPageElements(canvasElement)
 
-    const resetButton = canvas.getByText('Reset')
-    await expect(resetButton).toBeInTheDocument()
-    const signupButton = canvas.getByText('Signup')
-    await expect(signupButton).toBeInTheDocument()
-
-    fireEvent.change(screen.getByPlaceholderText('First Name'), {
+    fireEvent.change(firstNameInput, {
       target: { value: 'John' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Last Name'), {
+    fireEvent.change(lastNameInput, {
       target: { value: 'Doe' },
     })
-    fireEvent.change(screen.getByPlaceholderText('john@example.com'), {
+    fireEvent.change(usernameInput, {
       target: { value: 'john@example.com' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
+    fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+    fireEvent.change(confirmPasswordInput, {
       target: { value: 'password123' },
     })
 

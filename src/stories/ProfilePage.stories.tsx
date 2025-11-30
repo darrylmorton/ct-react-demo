@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, within, screen } from 'storybook/test'
+import { expect, screen } from 'storybook/test'
 import { MemoryRouter, Routes, Route } from 'react-router'
 
 import { AuthProvider } from '../Pages/AuthProvider'
 import { ProtectedRoutes } from '../Pages/ProtectedRoutes'
 import Profile from '../Pages/Profile'
 import { authToken } from '../helpers/AppHelper.tsx'
+import Login from '../Pages/Login.tsx'
+import { assertStoryLoginPageElements } from '../helpers/StoryHelper.tsx'
 
 const meta = {
   title: 'Profile/Page',
@@ -20,7 +22,7 @@ export const RedirectsToLoginWithoutAuthToken: Story = {
     <MemoryRouter initialEntries={['/user/profile']}>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<div>Login Page</div>} />
+          <Route path="/login" element={<Login />} />
 
           <Route path="/user" element={<ProtectedRoutes />}>
             <Route path="profile" element={<Profile />} />
@@ -30,9 +32,7 @@ export const RedirectsToLoginWithoutAuthToken: Story = {
     </MemoryRouter>
   ),
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    await expect(canvas.findByText('Login Page')).resolves.toBeInTheDocument()
+    await assertStoryLoginPageElements(canvasElement)
   },
 }
 
