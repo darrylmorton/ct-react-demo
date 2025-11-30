@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, screen, mocked } from 'storybook/test'
+import { MemoryRouter, Routes, Route } from 'react-router'
 
 import Logout from '../Pages/Logout'
 import { request } from '../utils/AppUtil'
 import { authToken } from '../helpers/AppHelper.tsx'
-import { assertStoryLogoutPageElements } from '../helpers/StoryHelper.tsx'
+import {
+  assertStoryLoginPageElements,
+  assertStoryLogoutPageElements,
+} from '../helpers/StoryHelper.tsx'
+import { AuthProvider } from '../Pages/AuthProvider'
+import { ProtectedRoutes } from '../Pages/ProtectedRoutes'
+import Login from '../Pages/Login.tsx'
 
 const meta = {
   title: 'Logout/Page',
@@ -15,12 +22,21 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const LogoutPageUnsuccessfulUserNotLoggedIn: Story = {
+  render: () => (
+    <MemoryRouter initialEntries={['/user/logout']}>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/user" element={<ProtectedRoutes />}>
+            <Route path="logout" element={<Logout />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </MemoryRouter>
+  ),
   play: async ({ canvasElement }) => {
-    const { logoutButton } = await assertStoryLogoutPageElements(canvasElement)
-
-    await userEvent.click(logoutButton)
-
-    expect(await screen.findByText('User is not logged in')).toBeInTheDocument()
+    await assertStoryLoginPageElements(canvasElement)
   },
 }
 
