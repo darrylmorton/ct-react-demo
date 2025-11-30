@@ -1,0 +1,142 @@
+name: Install, Lint, Build and Test
+
+on:
+  push:
+    branches-ignore: [ 'main' ]
+
+jobs:
+#  dependency-check:
+#    name: Run dependency check
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Dependency Check
+#        run: npm run depcheck
+
+  setup:
+    name: Run Setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/setup@main
+        with:
+          nodejs-version: 22.x
+
+  install-nodejs:
+    needs: [ setup ]
+    name: Install Node.js
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
+        with:
+          nodejs-version: 22.x
+
+  install-dependencies:
+    needs: [ setup, install-nodejs ]
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
+        with:
+          nodejs-version: 22.x
+
+      - name: Install Node.js Dependencies
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
+
+  lint:
+    needs: [ setup, install-nodejs, install-dependencies ]
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
+        with:
+          nodejs-version: 22.x
+
+      - name: Install Node.js Dependencies
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
+
+      - name: Lint
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/lint@main
+
+  build:
+    needs: [ setup, install-nodejs, install-dependencies, lint ]
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
+        with:
+          nodejs-version: 22.x
+
+      - name: Install Node.js Dependencies
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
+
+      - name: Lint
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/lint@main
+
+      - name: Build
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/build@main
+
+  test-unit-coverage:
+    needs: [ setup, install-nodejs, install-dependencies, lint ]
+    name: Run Unit Tests with Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install@main
+        with:
+          nodejs-version: 22.x
+
+      - name: Install Node.js Dependencies
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
+
+      - name: Lint
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/lint@main
+
+      - name: Install Playwright
+        shell: sh
+        run: npx playwright install
+
+      - name: Unit Tests
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main
