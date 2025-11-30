@@ -137,6 +137,6 @@ jobs:
       - name: Install Playwright
         shell: sh
         run: npx playwright install
-        
+
       - name: Unit Tests
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main
