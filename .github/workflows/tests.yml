@@ -128,15 +128,15 @@ jobs:
         with:
           nodejs-version: 22.x
 
-      - name: Install Playwright
-        shell: sh
-        run: npx playwright install
-
       - name: Install Node.js Dependencies
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/install-dependencies@main
 
       - name: Lint
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/lint@main
 
+      - name: Install Playwright
+        shell: sh
+        run: npx playwright install
+        
       - name: Unit Tests
         uses: darrylmorton/ct-continuous-workflows/.github/actions/nodejs/test-unit@main

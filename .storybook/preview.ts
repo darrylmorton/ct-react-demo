@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
-import { sb } from 'storybook/test'
+import { sb } from 'storybook'
 
 sb.mock('../src/utils/AppUtil.ts', { spy: true })
 
