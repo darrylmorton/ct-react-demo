@@ -42,7 +42,6 @@ const SignupForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
 
-  useEffect(() => {}, [successMessage, errorMessage])
 
   return (
     <Wrapper>
