@@ -10,8 +10,6 @@ export const useAuth = () => {
   const { user, authToken, login, logout, authenticate } = auth
 
   const isAuthorized = () => {
-    if (!user) return false
-
     return user
   }
 
