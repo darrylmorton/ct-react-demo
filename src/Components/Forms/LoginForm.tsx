@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 // import 'react-app-polyfill/ie11';
 import { Formik, Form, Field } from 'formik'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import * as Yup from 'yup'
 import { Button, TextField } from '@mui/material'
 
@@ -27,8 +27,6 @@ const LoginSchema = Yup.object({
 const LoginForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-
-  useEffect(() => {}, [successMessage, errorMessage])
 
   return (
     <Wrapper>

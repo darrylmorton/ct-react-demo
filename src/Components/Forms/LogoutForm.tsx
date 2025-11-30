@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Formik, Form } from 'formik'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@mui/material'
 
 import { request, API_URL, type LogoutRequestValues } from '../../utils/AppUtil'
@@ -8,7 +8,6 @@ import { request, API_URL, type LogoutRequestValues } from '../../utils/AppUtil'
 const LogoutForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-
 
   return (
     <Wrapper>
