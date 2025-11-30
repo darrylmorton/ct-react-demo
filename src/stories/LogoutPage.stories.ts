@@ -24,7 +24,7 @@ export const LogoutPageUnsuccessfulUserNotLoggedIn: Story = {
   },
 }
 
-export const LoginPageResponseUnsuccessful: Story = {
+export const LogoutPageResponseUnsuccessful: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
       json: async () => {
@@ -45,7 +45,7 @@ export const LoginPageResponseUnsuccessful: Story = {
   },
 }
 
-export const LoginPageError: Story = {
+export const LogoutPageError: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
       json: async () => {
@@ -66,7 +66,7 @@ export const LoginPageError: Story = {
   },
 }
 
-export const LoginPageSuccessful: Story = {
+export const LogoutPageSuccessful: Story = {
   beforeEach: async () => {
     mocked(request).mockResolvedValue({
       json: async () => {

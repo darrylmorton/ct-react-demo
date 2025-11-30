@@ -208,7 +208,7 @@ const FormButton = styled(Button)`
   }
 
   @media (min-width: 834px) {
-    width: 50%;
+    width: 40%;
   }
 `
 
