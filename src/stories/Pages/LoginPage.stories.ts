@@ -8,9 +8,9 @@ import {
   spyOn,
 } from 'storybook/test'
 
-import Login from '../Pages/Login'
-import { request, type LoginRequestValues } from '../utils/AppUtil'
-import { assertStoryLoginPageElements } from '../helpers/StoryHelper.tsx'
+import Login from '../../Pages/Login.tsx'
+import { request, type LoginRequestValues } from '../../utils/AppUtil.ts'
+import { assertStoryLoginPageElements } from '../../helpers/StoryHelper.tsx'
 
 const meta = {
   title: 'Login/Page',

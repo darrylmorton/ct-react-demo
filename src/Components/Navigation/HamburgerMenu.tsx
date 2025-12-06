@@ -4,7 +4,7 @@ import '../../hamburger-menu.css'
 
 export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
   return (
-    <nav role="navigation">
+    <nav role="navigation" data-testid="hamburger-menu">
       <div id="menuToggle">
         <input type="checkbox" id="menuCheckbox" />
 
@@ -15,7 +15,9 @@ export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
         <ul id="menu">
           <li>
             {selectedPage === 'home' ? (
-              <SelectedMenuItem>Home</SelectedMenuItem>
+              <SelectedMenuItem data-testid="selected-menu-item-home">
+                Home
+              </SelectedMenuItem>
             ) : (
               <label htmlFor="menuCheckbox">
                 <a href="/">Home</a>
@@ -24,7 +26,9 @@ export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
           </li>
           <li>
             {selectedPage === 'about' ? (
-              <SelectedMenuItem>About</SelectedMenuItem>
+              <SelectedMenuItem data-testid="selected-menu-item-about">
+                About
+              </SelectedMenuItem>
             ) : (
               <label htmlFor="menuCheckbox">
                 <a href="/about">About</a>

@@ -1,25 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, within } from 'storybook/test'
 
-import About from '../Pages/About'
+import Home from '../../Pages/Home.tsx'
 
 const meta = {
-  title: 'About/Page',
-  component: About,
+  title: 'Home/Page',
+  component: Home,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: 'fullscreen',
   },
-} satisfies Meta<typeof About>
+} satisfies Meta<typeof Home>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 // More on component testing: https://storybook.js.org/docs/writing-tests/interaction-testing
-export const AboutPage: Story = {
+export const HomePage: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const about = canvas.getByTestId('about-page')
-    await expect(about).toBeInTheDocument()
+    const home = canvas.getByTestId('home-page')
+    await expect(home).toBeInTheDocument()
   },
 }

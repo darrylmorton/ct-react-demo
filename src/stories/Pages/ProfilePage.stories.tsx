@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, screen } from 'storybook/test'
 import { MemoryRouter, Routes, Route } from 'react-router'
 
-import { AuthProvider } from '../Components/Auth/AuthProvider'
-import { ProtectedRoutes } from '../Components/Auth/ProtectedRoutes'
-import Profile from '../Pages/Profile'
-import { authToken } from '../helpers/AppHelper.tsx'
-import Login from '../Pages/Login.tsx'
-import { assertStoryLoginPageElements } from '../helpers/StoryHelper.tsx'
+import { AuthProvider } from '../../Components/Auth/AuthProvider.tsx'
+import { ProtectedRoutes } from '../../Components/Auth/ProtectedRoutes.tsx'
+import Profile from '../../Pages/Profile.tsx'
+import { authToken } from '../../helpers/AppHelper.tsx'
+import Login from '../../Pages/Login.tsx'
+import { assertStoryLoginPageElements } from '../../helpers/StoryHelper.tsx'
 
 const meta = {
   title: 'Profile/Page',
