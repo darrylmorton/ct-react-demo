@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { HamburgerMenu } from '../Components/Navigation/HamburgerMenu.tsx'
+import HamburgerMenu from '../Components/Navigation/HamburgerMenu.tsx'
 
 function About() {
   return (

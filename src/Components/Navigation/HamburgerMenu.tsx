@@ -2,7 +2,11 @@ import styled from '@emotion/styled'
 
 import '../../hamburger-menu.css'
 
-export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
+interface HamburgerMenuProps {
+  selectedPage?: string
+}
+
+function HamburgerMenu(props: HamburgerMenuProps) {
   return (
     <nav role="navigation" data-testid="hamburger-menu">
       <div id="menuToggle">
@@ -14,7 +18,7 @@ export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
 
         <ul id="menu">
           <li>
-            {selectedPage === 'home' ? (
+            {props.selectedPage === 'home' ? (
               <SelectedMenuItem data-testid="selected-menu-item-home">
                 Home
               </SelectedMenuItem>
@@ -25,7 +29,7 @@ export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
             )}
           </li>
           <li>
-            {selectedPage === 'about' ? (
+            {props.selectedPage === 'about' ? (
               <SelectedMenuItem data-testid="selected-menu-item-about">
                 About
               </SelectedMenuItem>
@@ -49,3 +53,5 @@ export const HamburgerMenu = ({ selectedPage }: { selectedPage: string }) => {
 const SelectedMenuItem = styled.div`
   color: grey;
 `
+
+export default HamburgerMenu

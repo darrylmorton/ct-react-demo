@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { userEvent, within, expect, screen } from 'storybook/test'
 
-import { HamburgerMenu } from '../../Components/Navigation/HamburgerMenu.tsx'
+import HamburgerMenu from '../../Components/Navigation/HamburgerMenu.tsx'
 
 const meta = {
   title: 'HamburgerMenu/Navigation',
