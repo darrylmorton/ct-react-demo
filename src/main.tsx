@@ -8,8 +8,8 @@ import Signup from './Pages/Signup'
 import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import Logout from './Pages/Logout'
-import { AuthProvider } from './Pages/AuthProvider'
-import { ProtectedRoutes } from './Pages/ProtectedRoutes'
+import { AuthProvider } from './Components/Auth/AuthProvider'
+import { ProtectedRoutes } from './Components/Auth/ProtectedRoutes'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>

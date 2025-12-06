@@ -8,6 +8,6 @@ describe.skip('Signup Page', () => {
   test('Should render the <Signup />', () => {
     render(<Signup />)
 
-    expect(screen.getByTestId('signup-form')).toBeInTheDocument()
+    expect(screen.getByTestId('signup-page')).toBeInTheDocument()
   })
 })

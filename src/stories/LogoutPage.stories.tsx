@@ -9,8 +9,8 @@ import {
   assertStoryLoginPageElements,
   assertStoryLogoutPageElements,
 } from '../helpers/StoryHelper.tsx'
-import { AuthProvider } from '../Pages/AuthProvider'
-import { ProtectedRoutes } from '../Pages/ProtectedRoutes'
+import { AuthProvider } from '../Components/Auth/AuthProvider'
+import { ProtectedRoutes } from '../Components/Auth/ProtectedRoutes'
 import Login from '../Pages/Login.tsx'
 
 const meta = {
