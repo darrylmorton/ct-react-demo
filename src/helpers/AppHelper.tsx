@@ -24,5 +24,5 @@ export const assertSignupPageElements = () => {
 }
 
 export const assertLogoutPageElements = async () => {
-  return { logoutButton: screen.getByText('Logout') }
+  return { logoutButton: screen.getByTestId('logout-page') }
 }

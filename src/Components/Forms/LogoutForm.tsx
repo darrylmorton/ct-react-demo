@@ -10,7 +10,7 @@ const LogoutForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   return (
-    <Wrapper>
+    <Wrapper data-testid="logout-form">
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}

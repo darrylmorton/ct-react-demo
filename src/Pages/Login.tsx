@@ -4,7 +4,7 @@ import LoginForm from '../Components/Forms/LoginForm.tsx'
 
 function Login() {
   return (
-    <Wrapper>
+    <Wrapper data-testid="login-page">
       <LoginForm />
     </Wrapper>
   )

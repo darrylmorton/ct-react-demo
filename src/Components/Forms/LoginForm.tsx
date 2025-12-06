@@ -29,7 +29,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   return (
-    <Wrapper>
+    <Wrapper data-testid="login-form">
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}

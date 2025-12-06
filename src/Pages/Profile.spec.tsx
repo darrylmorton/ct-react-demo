@@ -8,6 +8,6 @@ describe('Profile Page', () => {
   test('Should render the <Login />', () => {
     render(<Profile />)
 
-    expect(screen.getByText('Profile')).toBeInTheDocument()
+    expect(screen.getByTestId('profile-page')).toBeInTheDocument()
   })
 })

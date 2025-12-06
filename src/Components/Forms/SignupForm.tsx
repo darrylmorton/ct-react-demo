@@ -43,12 +43,12 @@ const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   return (
-    <Wrapper>
+    <Wrapper data-testid="signup-form">
+      {' '}
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
       {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
-
       <Formik
         initialValues={
           {

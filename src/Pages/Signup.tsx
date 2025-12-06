@@ -4,7 +4,7 @@ import SignupForm from '../Components/Forms/SignupForm.tsx'
 
 function Signup() {
   return (
-    <Wrapper>
+    <Wrapper data-testid="signup-page">
       <SignupForm />
     </Wrapper>
   )

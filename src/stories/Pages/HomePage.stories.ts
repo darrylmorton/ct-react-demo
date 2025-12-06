@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, within } from 'storybook/test'
 
-import Home from '../Pages/Home'
+import Home from '../../Pages/Home.tsx'
 
 const meta = {
   title: 'Home/Page',
@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>
 export const HomePage: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const home = canvas.getByText('Home')
+    const home = canvas.getByTestId('home-page')
     await expect(home).toBeInTheDocument()
   },
 }
