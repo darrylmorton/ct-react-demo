@@ -4,7 +4,7 @@ import LogoutForm from '../Components/Forms/LogoutForm.tsx'
 
 function Logout() {
   return (
-    <Wrapper>
+    <Wrapper data-testid="logout-page">
       <LogoutForm />
     </Wrapper>
   )

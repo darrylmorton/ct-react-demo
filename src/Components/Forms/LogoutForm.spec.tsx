@@ -10,7 +10,7 @@ describe('Logout Form', () => {
   test.skip('Should render the <LogoutForm />', () => {
     render(<LogoutForm />)
 
-    expect(screen.getByText('Logout Form')).toBeInTheDocument()
+    expect(screen.getByTestId('logout-form')).toBeInTheDocument()
   })
 
   test('Submits form successfully with logged out user', async () => {

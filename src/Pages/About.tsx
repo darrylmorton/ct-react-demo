@@ -2,11 +2,11 @@ import styled from '@emotion/styled'
 
 import { HamburgerMenu } from '../Components/Navigation/HamburgerMenu.tsx'
 
-function Home() {
+function About() {
   return (
-    <Wrapper data-testid="home-page">
-      <HamburgerMenu selectedPage="home" />
-      <div>Home</div>
+    <Wrapper data-testid="about-page">
+      <HamburgerMenu selectedPage="about" />
+      <div>About</div>
     </Wrapper>
   )
 }
@@ -18,4 +18,4 @@ const Wrapper = styled.div`
   padding: 32px;
 `
 
-export default Home
+export default About

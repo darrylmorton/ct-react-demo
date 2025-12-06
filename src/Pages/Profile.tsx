@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 function Profile() {
-  return <Wrapper>Profile</Wrapper>
+  return <Wrapper data-testid="profile-page">Profile</Wrapper>
 }
 
 const Wrapper = styled.div`
