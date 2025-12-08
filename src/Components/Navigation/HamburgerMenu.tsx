@@ -41,7 +41,9 @@ function HamburgerMenu(props: HamburgerMenuProps) {
           </li>
           <li>
             <label htmlFor="menuCheckbox">
-              <a>Contact</a>
+              <a href="mailto:no.reply.creativelytechnical@gmail.com">
+                Contact
+              </a>
             </label>
           </li>
         </ul>

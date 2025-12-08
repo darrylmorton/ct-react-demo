@@ -2,6 +2,10 @@ export const EMAIL_REGEX = new RegExp(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/
 )
 
+export type ConfirmAccountRequestValues = {
+  confirmAccountToken: string
+}
+
 export interface LogoutRequestValues {
   authToken: string
 }
@@ -22,6 +26,7 @@ export interface SignupFormValues extends SignupRequestValues {
 
 export type RequestValues =
   | SignupFormValues
+  | ConfirmAccountRequestValues
   | LoginRequestValues
   | LogoutRequestValues
 
@@ -35,7 +40,7 @@ console.log('CORS_MODE', CORS_MODE)
 export const API_URL = `${API_BASE}/api`
 console.log('API_URL', API_URL)
 
-export type ApiUrlSuffixType = 'signup' | 'login' | 'logout'
+export type ApiUrlSuffixType = 'signup' | 'confirm-account' | 'login' | 'logout'
 
 export const request = async (
   apiUrlSuffix: ApiUrlSuffixType,
