@@ -10,7 +10,9 @@ import Profile from './Pages/Profile'
 import Logout from './Pages/Logout'
 import { AuthProvider } from './Components/Auth/AuthProvider'
 import { ProtectedRoutes } from './Components/Auth/ProtectedRoutes'
-import ConfirmAccount from './Pages/ConfirmAccount.tsx'
+import ConfirmAccount from './Pages/ConfirmAccount'
+import ResetPassword from './Pages/ResetPassword'
+import ForgotPassword from './Pages/ForgotPassword'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -21,6 +23,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/signup" element={<Signup />} />
         <Route path="/confirm-account" element={<ConfirmAccount />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/user" element={<ProtectedRoutes />}>
           <Route path="profile" element={<Profile />} />

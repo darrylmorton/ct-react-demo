@@ -1,37 +1,30 @@
 import styled from '@emotion/styled'
 import { Formik, Form, Field } from 'formik'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import * as Yup from 'yup'
-import { Button } from '@mui/material'
-import { useSearchParams } from 'react-router'
+import { Button, TextField } from '@mui/material'
 
 import {
   request,
   API_URL,
-  type ConfirmAccountRequestValues,
+  type ForgotPasswordRequestValues,
+  EMAIL_REGEX,
 } from '../../utils/AppUtil'
 
-const ConfirmAccountSchema = Yup.object({
-  confirmAccountToken: Yup.string()
-    .min(8, 'Required')
-    .max(16, 'Required')
-    .required('Confirm Account Token is Required'),
+const ForgotPasswordFormSchema = Yup.object({
+  username: Yup.string()
+    .matches(EMAIL_REGEX, {
+      message: 'Invalid email',
+    })
+    .required('Required'),
 })
 
-const ConfirmAccountForm = () => {
+const ForgotPasswordForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [searchParams] = useSearchParams()
-  const confirmAccountToken = searchParams.get('confirmAccountToken') || ''
-
-  useEffect(() => {
-    if (!confirmAccountToken) {
-      setErrorMessage('Account confirmation token is missing')
-    }
-  }, [confirmAccountToken])
 
   return (
-    <Wrapper data-testid="confirm-account-form">
+    <Wrapper data-testid="forgot-password-form">
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
@@ -40,14 +33,14 @@ const ConfirmAccountForm = () => {
       <Formik
         initialValues={
           {
-            confirmAccountToken,
-          } as ConfirmAccountRequestValues
+            username: '',
+          } as ForgotPasswordRequestValues
         }
-        validationSchema={ConfirmAccountSchema}
-        onSubmit={async (values: ConfirmAccountRequestValues) => {
-          const response = await request('confirm-account', {
-            confirmAccountToken: values.confirmAccountToken,
-          } as ConfirmAccountRequestValues)
+        validationSchema={ForgotPasswordFormSchema}
+        onSubmit={async (values: ForgotPasswordRequestValues) => {
+          const response = await request('forgot-password', {
+            username: values.username,
+          } as ForgotPasswordRequestValues)
 
           try {
             const responseJson = await response.json()
@@ -70,23 +63,29 @@ const ConfirmAccountForm = () => {
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper id="confirmAccountForm" method="POST" action={API_URL}>
-            <Field
-              id="confirmAccountToken"
-              name="confirmAccountToken"
-              data-testid="confirm-account-token-input"
-              type="hidden"
-              value={confirmAccountToken}
-            />
-            {errors.confirmAccountToken && touched.confirmAccountToken ? (
-              <FormValidationMessage>
-                {errors.confirmAccountToken}
-              </FormValidationMessage>
-            ) : null}
+          <FormWrapper id="forgotPasswordForm" method="POST" action={API_URL}>
+            <FormRow>
+              <FormColumn textAlign="left">
+                <label htmlFor="username">Email*:</label>
+                <Field
+                  as={FormField}
+                  id="username"
+                  name="username"
+                  placeholder="Email"
+                  variant="outlined"
+                  size="small"
+                />
+                {errors.username && touched.username ? (
+                  <FormValidationMessage>
+                    {errors.username}
+                  </FormValidationMessage>
+                ) : null}
+              </FormColumn>
+            </FormRow>
             <FormRow>
               <FormColumn alignItems="center">
                 <FormButton type="submit" variant="outlined" size="medium">
-                  Confirm Account
+                  Forgot Password
                 </FormButton>
               </FormColumn>
             </FormRow>
@@ -145,6 +144,11 @@ const FormColumn = styled('div')<FormColumnProps>`
   }
 `
 
+const FormField = styled(TextField)`
+  width: 100%;
+  font-size: 1rem;
+`
+
 const FormSuccessMessage = styled.div`
   color: #008000;
   text-align: center;
@@ -176,4 +180,4 @@ const FormButton = styled(Button)`
   }
 `
 
-export default ConfirmAccountForm
+export default ForgotPasswordForm

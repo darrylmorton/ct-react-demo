@@ -2,36 +2,51 @@ import styled from '@emotion/styled'
 import { Formik, Form, Field } from 'formik'
 import { useState, useEffect } from 'react'
 import * as Yup from 'yup'
-import { Button } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import { useSearchParams } from 'react-router'
 
 import {
   request,
   API_URL,
-  type ConfirmAccountRequestValues,
+  type ResetPasswordRequestValues,
+  EMAIL_REGEX,
 } from '../../utils/AppUtil'
 
-const ConfirmAccountSchema = Yup.object({
-  confirmAccountToken: Yup.string()
+const ResetPasswordSchema = Yup.object({
+  resetPasswordToken: Yup.string()
     .min(8, 'Required')
     .max(16, 'Required')
-    .required('Confirm Account Token is Required'),
+    .required('Reset Password Token is Required'),
+  username: Yup.string()
+    .matches(EMAIL_REGEX, {
+      message: 'Invalid email',
+    })
+    .required('Required'),
+  password: Yup.string()
+    .min(8, 'Too Short!')
+    .max(16, 'Too Long!')
+    .required('Required'),
+  confirmPassword: Yup.string()
+    .min(8, 'Too Short!')
+    .max(16, 'Too Long!')
+    .equals([Yup.ref('password')], 'Passwords do not match')
+    .required('Passwords do not match'),
 })
 
-const ConfirmAccountForm = () => {
+const ResetPasswordForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [searchParams] = useSearchParams()
-  const confirmAccountToken = searchParams.get('confirmAccountToken') || ''
+  const resetPasswordToken = searchParams.get('reset-password-token') || ''
 
   useEffect(() => {
-    if (!confirmAccountToken) {
-      setErrorMessage('Account confirmation token is missing')
+    if (!resetPasswordToken) {
+      setErrorMessage('Reset Password token is missing')
     }
-  }, [confirmAccountToken])
+  }, [resetPasswordToken])
 
   return (
-    <Wrapper data-testid="confirm-account-form">
+    <Wrapper data-testid="reset-password-form">
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
@@ -40,14 +55,15 @@ const ConfirmAccountForm = () => {
       <Formik
         initialValues={
           {
-            confirmAccountToken,
-          } as ConfirmAccountRequestValues
+            resetPasswordToken,
+          } as ResetPasswordRequestValues
         }
-        validationSchema={ConfirmAccountSchema}
-        onSubmit={async (values: ConfirmAccountRequestValues) => {
-          const response = await request('confirm-account', {
-            confirmAccountToken: values.confirmAccountToken,
-          } as ConfirmAccountRequestValues)
+        validationSchema={ResetPasswordSchema}
+        onSubmit={async (values: ResetPasswordRequestValues) => {
+          const response = await request('reset-password', {
+            resetPasswordToken: values.resetPasswordToken,
+            password: values.password,
+          } as ResetPasswordRequestValues)
 
           try {
             const responseJson = await response.json()
@@ -70,19 +86,52 @@ const ConfirmAccountForm = () => {
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper id="confirmAccountForm" method="POST" action={API_URL}>
+          <FormWrapper id="resetPasswordForm" method="POST" action={API_URL}>
             <Field
-              id="confirmAccountToken"
-              name="confirmAccountToken"
-              data-testid="confirm-account-token-input"
+              id="resetPasswordToken"
+              name="resetPasswordToken"
               type="hidden"
-              value={confirmAccountToken}
+              value={resetPasswordToken}
             />
-            {errors.confirmAccountToken && touched.confirmAccountToken ? (
+            {errors.resetPasswordToken && touched.resetPasswordToken ? (
               <FormValidationMessage>
-                {errors.confirmAccountToken}
+                {errors.resetPasswordToken}
               </FormValidationMessage>
             ) : null}
+            <FormRow>
+              <FormColumn textAlign="left">
+                <label htmlFor="password">Password*:</label>
+                <Field
+                  as={FormField}
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                  variant="outlined"
+                  size="small"
+                />
+                {errors.password && touched.password ? (
+                  <FormValidationMessage>
+                    {errors.password}
+                  </FormValidationMessage>
+                ) : null}
+              </FormColumn>
+              <FormColumn textAlign="left">
+                <label htmlFor="confirmPassword">Confirm Password*:</label>
+                <Field
+                  as={FormField}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  variant="outlined"
+                  size="small"
+                />
+                {errors.confirmPassword && touched.confirmPassword ? (
+                  <FormValidationMessage>
+                    {errors.confirmPassword}
+                  </FormValidationMessage>
+                ) : null}
+              </FormColumn>
+            </FormRow>
             <FormRow>
               <FormColumn alignItems="center">
                 <FormButton type="submit" variant="outlined" size="medium">
@@ -145,6 +194,11 @@ const FormColumn = styled('div')<FormColumnProps>`
   }
 `
 
+const FormField = styled(TextField)`
+  width: 100%;
+  font-size: 1rem;
+`
+
 const FormSuccessMessage = styled.div`
   color: #008000;
   text-align: center;
@@ -176,4 +230,4 @@ const FormButton = styled(Button)`
   }
 `
 
-export default ConfirmAccountForm
+export default ResetPasswordForm

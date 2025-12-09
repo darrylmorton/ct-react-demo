@@ -25,6 +25,29 @@ export const assertSignupPageElements = () => {
   }
 }
 
+export const assertForgotPasswordPageElements = () => {
+  return {
+    usernameInput: screen.getByTestId('username-input'),
+    submitButton: screen.getByText('Submit'),
+  }
+}
+
+export const assertConfirmAccountPageElements = () => {
+  return {
+    confirmAccountTokenInput: screen.getByTestId('confirm-account-token-input'),
+    confirmAccountButton: screen.getByText('Confirm Account'),
+  }
+}
+
+export const assertResetPasswordPageElements = () => {
+  return {
+    usernameInput: screen.getByTestId('username-input'),
+    passwordInput: screen.getByPlaceholderText('Password'),
+    confirmPasswordInput: screen.getByPlaceholderText('Confirm Password'),
+    resetPasswordButton: screen.getByText('Reset Password'),
+  }
+}
+
 export const assertLogoutPageElements = async () => {
   return { logoutButton: screen.getByTestId('logout-page') }
 }

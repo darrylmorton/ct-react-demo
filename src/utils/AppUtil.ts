@@ -6,6 +6,17 @@ export type ConfirmAccountRequestValues = {
   confirmAccountToken: string
 }
 
+export type ForgotPasswordRequestValues = {
+  username: string
+}
+
+export type ResetPasswordRequestValues = {
+  resetPasswordToken: string
+  username: string
+  password: string
+  confirmPassword: string
+}
+
 export interface LogoutRequestValues {
   authToken: string
 }
@@ -29,6 +40,8 @@ export type RequestValues =
   | ConfirmAccountRequestValues
   | LoginRequestValues
   | LogoutRequestValues
+  | ForgotPasswordRequestValues
+  | ResetPasswordRequestValues
 
 // Read Vite environment variables (only VITE_ prefixed vars are exposed to the browser)
 export const API_BASE = import.meta.env?.VITE_API_BASE as string
@@ -40,7 +53,13 @@ console.log('CORS_MODE', CORS_MODE)
 export const API_URL = `${API_BASE}/api`
 console.log('API_URL', API_URL)
 
-export type ApiUrlSuffixType = 'signup' | 'confirm-account' | 'login' | 'logout'
+export type ApiUrlSuffixType =
+  | 'signup'
+  | 'confirm-account'
+  | 'login'
+  | 'logout'
+  | 'forgot-password'
+  | 'reset-password'
 
 export const request = async (
   apiUrlSuffix: ApiUrlSuffixType,
