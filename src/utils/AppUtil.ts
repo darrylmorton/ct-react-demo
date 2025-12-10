@@ -45,13 +45,10 @@ export type RequestValues =
 
 // Read Vite environment variables (only VITE_ prefixed vars are exposed to the browser)
 export const API_BASE = import.meta.env?.VITE_API_BASE as string
-console.log('API_BASE', API_BASE)
 
 export const CORS_MODE = import.meta.env?.VITE_CORS_MODE as string
-console.log('CORS_MODE', CORS_MODE)
 
 export const API_URL = `${API_BASE}/api`
-console.log('API_URL', API_URL)
 
 export type ApiUrlSuffixType =
   | 'signup'

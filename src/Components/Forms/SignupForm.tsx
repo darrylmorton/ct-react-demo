@@ -74,11 +74,8 @@ const SignupForm = () => {
 
           try {
             const responseJson = await response.json()
-            console.log('responseJson.status', responseJson.status)
 
             if (responseJson.status !== 200) {
-              console.error(responseJson.message)
-
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
             } else {

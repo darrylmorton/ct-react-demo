@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Formik, Form, Field } from 'formik'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import * as Yup from 'yup'
 import { Button, TextField } from '@mui/material'
 import { useSearchParams } from 'react-router'
@@ -33,18 +33,15 @@ const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams()
   const resetPasswordToken = searchParams.get('resetPasswordToken') || ''
 
-  useEffect(() => {
-    if (!resetPasswordToken) {
-      setErrorMessage('Reset Password token is missing')
-    }
-  }, [resetPasswordToken])
-
   return (
     <Wrapper data-testid="reset-password-form">
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
-      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      {(errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>) ||
+        (!resetPasswordToken && (
+          <FormErrorMessage>Reset Password token is missing</FormErrorMessage>
+        ))}
 
       <Formik
         initialValues={

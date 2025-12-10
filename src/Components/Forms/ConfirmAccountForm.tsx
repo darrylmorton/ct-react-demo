@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Formik, Form, Field } from 'formik'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import * as Yup from 'yup'
 import { Button } from '@mui/material'
 import { useSearchParams } from 'react-router'
@@ -24,18 +24,17 @@ const ConfirmAccountForm = () => {
   const [searchParams] = useSearchParams()
   const confirmAccountToken = searchParams.get('confirmAccountToken') || ''
 
-  useEffect(() => {
-    if (!confirmAccountToken) {
-      setErrorMessage('Account confirmation token is missing')
-    }
-  }, [confirmAccountToken])
-
   return (
     <Wrapper data-testid="confirm-account-form">
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
-      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      {(errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>) ||
+        (!confirmAccountToken && (
+          <FormErrorMessage>
+            Account confirmation token is missing
+          </FormErrorMessage>
+        ))}
 
       <Formik
         initialValues={
@@ -55,11 +54,9 @@ const ConfirmAccountForm = () => {
             if (responseJson.status !== 200) {
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
-            } else if (responseJson.status === 200 && responseJson.authToken) {
+            } else {
               setSuccessMessage('Submitted successfully')
               if (errorMessage) setErrorMessage('')
-            } else {
-              throw new Error('Request error')
             }
           } catch (err) {
             console.error('Server error', err)

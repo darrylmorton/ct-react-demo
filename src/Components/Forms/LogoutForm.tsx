@@ -32,7 +32,6 @@ const LogoutForm = () => {
 
             try {
               const responseJson = await response.json()
-              console.log('responseJson.status', responseJson.status)
 
               if (responseJson.status !== 200) {
                 setErrorMessage('Submitted unsuccessfully')
