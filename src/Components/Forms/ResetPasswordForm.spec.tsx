@@ -1,48 +1,64 @@
 import { describe, test, expect, vi } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
+import { MemoryRouter } from 'react-router'
 
 import ResetPasswordForm from './ResetPasswordForm.tsx'
-import { assertResetPasswordPageElements } from '../../helpers/AppHelper.tsx'
+import {
+  assertResetPasswordPageElements,
+  resetPasswordToken,
+} from '../../helpers/AppHelper.tsx'
 import * as AppUtil from '../../utils/AppUtil'
 
 describe('Reset Password Form', () => {
   test.skip('Should render the <ResetPasswordForm />', () => {
-    render(<ResetPasswordForm />)
+    render(
+      <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+        <ResetPasswordForm />
+      </MemoryRouter>
+    )
 
     expect(screen.getByTestId('reset-password-form')).toBeInTheDocument()
   })
 
   test('Displays validation errors for empty required fields', async () => {
-    render(<ResetPasswordForm />)
+    render(
+      <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+        <ResetPasswordForm />
+      </MemoryRouter>
+    )
 
     const { resetPasswordButton } = assertResetPasswordPageElements()
 
     fireEvent.click(resetPasswordButton)
 
-    expect(await screen.findByText('Required')).toBeInTheDocument()
+    const requiredMessages = await screen.findAllByText('Required')
+    expect(requiredMessages.length).toBeGreaterThanOrEqual(1)
     expect(
       await screen.findByText('Passwords do not match')
     ).toBeInTheDocument()
   })
 
-  test('Displays error for invalid email format', async () => {
-    render(<ResetPasswordForm />)
-
-    const { usernameInput, resetPasswordButton } =
-      assertResetPasswordPageElements()
-
-    fireEvent.change(usernameInput, {
-      target: { value: 'invalid-email' },
-    })
-
-    fireEvent.click(resetPasswordButton)
-
-    expect(await screen.findByText('Invalid email')).toBeInTheDocument()
-  })
+  // test('Displays error for invalid email format', async () => {
+  //   render(
+  //     <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+  //       <ResetPasswordForm />
+  //     </MemoryRouter>
+  //   )
+  //
+  //   const { resetPasswordButton } = assertResetPasswordPageElements()
+  //
+  //   fireEvent.click(resetPasswordButton)
+  //
+  //   expect(await screen.findByText('Invalid email')).toBeInTheDocument()
+  // })
 
   test('Displays error when passwords do not match', async () => {
-    render(<ResetPasswordForm />)
+    render(
+      <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+        <ResetPasswordForm />
+      </MemoryRouter>
+    )
 
     const { passwordInput, confirmPasswordInput, resetPasswordButton } =
       assertResetPasswordPageElements()
@@ -65,18 +81,17 @@ describe('Reset Password Form', () => {
       json: async () => ({ status: 400 }),
     } as Response)
 
-    render(<ResetPasswordForm />)
+    render(
+      <MemoryRouter
+        initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+      >
+        <ResetPasswordForm />
+      </MemoryRouter>
+    )
 
-    const {
-      usernameInput,
-      passwordInput,
-      confirmPasswordInput,
-      resetPasswordButton,
-    } = assertResetPasswordPageElements()
+    const { passwordInput, confirmPasswordInput, resetPasswordButton } =
+      assertResetPasswordPageElements()
 
-    fireEvent.change(usernameInput, {
-      target: { value: 'john@example.com' },
-    })
     fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })
@@ -95,21 +110,20 @@ describe('Reset Password Form', () => {
 
   test('Submits form successfully with valid inputs', async () => {
     const spy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
-      json: async () => ({ status: 200 }),
+      json: async () => ({ status: 200 }), // , authToken: 'fake-token' }),
     } as Response)
 
-    render(<ResetPasswordForm />)
+    render(
+      <MemoryRouter
+        initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+      >
+        <ResetPasswordForm />
+      </MemoryRouter>
+    )
 
-    const {
-      usernameInput,
-      passwordInput,
-      confirmPasswordInput,
-      resetPasswordButton,
-    } = assertResetPasswordPageElements()
+    const { passwordInput, confirmPasswordInput, resetPasswordButton } =
+      assertResetPasswordPageElements()
 
-    fireEvent.change(usernameInput, {
-      target: { value: 'john@example.com' },
-    })
     fireEvent.change(passwordInput, {
       target: { value: 'password123' },
     })

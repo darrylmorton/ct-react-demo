@@ -4,6 +4,8 @@ export const authToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
 export const confirmAccountToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw6d'
+export const resetPasswordToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw7e'
 
 export const assertLoginPageElements = () => {
   return {
@@ -27,8 +29,9 @@ export const assertSignupPageElements = () => {
 
 export const assertForgotPasswordPageElements = () => {
   return {
-    usernameInput: screen.getByTestId('username-input'),
-    submitButton: screen.getByText('Submit'),
+    // ForgotPasswordForm renders an input with placeholder 'Email'
+    usernameInput: screen.getByPlaceholderText('john@example.com'),
+    submitButton: screen.getByText('Forgot Password'),
   }
 }
 
@@ -41,7 +44,7 @@ export const assertConfirmAccountPageElements = () => {
 
 export const assertResetPasswordPageElements = () => {
   return {
-    usernameInput: screen.getByTestId('username-input'),
+    resetPasswordToken: screen.getByTestId('reset-password-token-input'),
     passwordInput: screen.getByPlaceholderText('Password'),
     confirmPasswordInput: screen.getByPlaceholderText('Confirm Password'),
     resetPasswordButton: screen.getByText('Reset Password'),

@@ -3,19 +3,16 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
 import ConfirmAccountForm from './ConfirmAccountForm.tsx'
-import {
-  assertConfirmAccountPageElements,
-  confirmAccountToken,
-} from '../../helpers/AppHelper.tsx'
+import { assertConfirmAccountPageElements } from '../../helpers/AppHelper.tsx'
 import * as AppUtil from '../../utils/AppUtil'
-import { BrowserRouter } from 'react-router'
+import { MemoryRouter } from 'react-router'
 
 describe('Confirm Account Form', () => {
   test.skip('Should render the <ConfirmAccountForm />', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <ConfirmAccountForm />
-      </BrowserRouter>
+      </MemoryRouter>
     )
 
     expect(screen.getByTestId('confirm-account-form')).toBeInTheDocument()
@@ -23,9 +20,9 @@ describe('Confirm Account Form', () => {
 
   test('Displays validation errors for empty required fields', async () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <ConfirmAccountForm />
-      </BrowserRouter>
+      </MemoryRouter>
     )
 
     const { confirmAccountButton } = assertConfirmAccountPageElements()
@@ -39,9 +36,9 @@ describe('Confirm Account Form', () => {
 
   test.skip('Displays error for invalid jwt format', async () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <ConfirmAccountForm />
-      </BrowserRouter>
+      </MemoryRouter>
     )
 
     const { confirmAccountTokenInput, confirmAccountButton } =
@@ -61,18 +58,18 @@ describe('Confirm Account Form', () => {
       json: async () => ({ status: 400 }),
     } as Response)
 
+    // Provide a valid-length token via router initialEntries so Formik validation passes
+    const invalidButLongToken = 'abcdefgh' // 8 chars meets min length
+
     render(
-      <BrowserRouter>
+      <MemoryRouter
+        initialEntries={[`/?confirmAccountToken=${invalidButLongToken}`]}
+      >
         <ConfirmAccountForm />
-      </BrowserRouter>
+      </MemoryRouter>
     )
 
-    const { confirmAccountTokenInput, confirmAccountButton } =
-      assertConfirmAccountPageElements()
-
-    fireEvent.change(confirmAccountTokenInput, {
-      target: { value: 'abc' },
-    })
+    const { confirmAccountButton } = assertConfirmAccountPageElements()
 
     fireEvent.click(confirmAccountButton)
 
@@ -85,21 +82,19 @@ describe('Confirm Account Form', () => {
 
   test('Submits form successfully with valid inputs', async () => {
     const spy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
-      json: async () => ({ status: 200 }),
+      json: async () => ({ status: 200, authToken: 'fake-token' }),
     } as Response)
 
+    // Use a token of valid length (8 chars) so validation passes
+    const validToken = 'abcd1234'
+
     render(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={[`/?confirmAccountToken=${validToken}`]}>
         <ConfirmAccountForm />
-      </BrowserRouter>
+      </MemoryRouter>
     )
 
-    const { confirmAccountTokenInput, confirmAccountButton } =
-      assertConfirmAccountPageElements()
-
-    fireEvent.change(confirmAccountTokenInput, {
-      target: { value: confirmAccountToken },
-    })
+    const { confirmAccountButton } = assertConfirmAccountPageElements()
 
     fireEvent.click(confirmAccountButton)
 

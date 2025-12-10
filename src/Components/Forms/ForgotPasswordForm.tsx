@@ -48,11 +48,9 @@ const ForgotPasswordForm = () => {
             if (responseJson.status !== 200) {
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
-            } else if (responseJson.status === 200 && responseJson.authToken) {
+            } else {
               setSuccessMessage('Submitted successfully')
               if (errorMessage) setErrorMessage('')
-            } else {
-              throw new Error('Request error')
             }
           } catch (err) {
             console.error('Server error', err)
@@ -71,7 +69,8 @@ const ForgotPasswordForm = () => {
                   as={FormField}
                   id="username"
                   name="username"
-                  placeholder="Email"
+                  // data-testid="username-input"
+                  placeholder="john@example.com"
                   variant="outlined"
                   size="small"
                 />

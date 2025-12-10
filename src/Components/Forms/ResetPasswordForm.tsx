@@ -9,19 +9,13 @@ import {
   request,
   API_URL,
   type ResetPasswordRequestValues,
-  EMAIL_REGEX,
 } from '../../utils/AppUtil'
 
 const ResetPasswordSchema = Yup.object({
   resetPasswordToken: Yup.string()
     .min(8, 'Required')
-    .max(16, 'Required')
+    .max(200, 'Required')
     .required('Reset Password Token is Required'),
-  username: Yup.string()
-    .matches(EMAIL_REGEX, {
-      message: 'Invalid email',
-    })
-    .required('Required'),
   password: Yup.string()
     .min(8, 'Too Short!')
     .max(16, 'Too Long!')
@@ -37,7 +31,7 @@ const ResetPasswordForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [searchParams] = useSearchParams()
-  const resetPasswordToken = searchParams.get('reset-password-token') || ''
+  const resetPasswordToken = searchParams.get('resetPasswordToken') || ''
 
   useEffect(() => {
     if (!resetPasswordToken) {
@@ -56,6 +50,8 @@ const ResetPasswordForm = () => {
         initialValues={
           {
             resetPasswordToken,
+            password: '',
+            confirmPassword: '',
           } as ResetPasswordRequestValues
         }
         validationSchema={ResetPasswordSchema}
@@ -71,11 +67,9 @@ const ResetPasswordForm = () => {
             if (responseJson.status !== 200) {
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
-            } else if (responseJson.status === 200 && responseJson.authToken) {
+            } else {
               setSuccessMessage('Submitted successfully')
               if (errorMessage) setErrorMessage('')
-            } else {
-              throw new Error('Request error')
             }
           } catch (err) {
             console.error('Server error', err)
@@ -90,6 +84,7 @@ const ResetPasswordForm = () => {
             <Field
               id="resetPasswordToken"
               name="resetPasswordToken"
+              data-testid="reset-password-token-input"
               type="hidden"
               value={resetPasswordToken}
             />
@@ -135,7 +130,7 @@ const ResetPasswordForm = () => {
             <FormRow>
               <FormColumn alignItems="center">
                 <FormButton type="submit" variant="outlined" size="medium">
-                  Confirm Account
+                  Reset Password
                 </FormButton>
               </FormColumn>
             </FormRow>
