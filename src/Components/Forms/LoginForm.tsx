@@ -30,10 +30,12 @@ const LoginForm = () => {
 
   return (
     <Wrapper data-testid="login-form">
-      {successMessage && (
-        <FormSuccessMessage>{successMessage}</FormSuccessMessage>
-      )}
-      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      <FormMessageWrapper>
+        {successMessage && (
+          <FormSuccessMessage>{successMessage}</FormSuccessMessage>
+        )}
+        {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      </FormMessageWrapper>
 
       <Formik
         initialValues={
@@ -119,6 +121,20 @@ const LoginForm = () => {
                 </FormButton>
               </FormColumn>
             </FormRow>
+            <FormRow>
+              <FormColumn alignItems="center">
+                <FormLinkWrapper>
+                  No account? <a href="/signup">Signup</a>
+                </FormLinkWrapper>
+              </FormColumn>
+            </FormRow>
+            <FormRow>
+              <FormColumn alignItems="center">
+                <FormLinkWrapper>
+                  <a href="/forgot-password">Forgot Password</a>?
+                </FormLinkWrapper>
+              </FormColumn>
+            </FormRow>
           </FormWrapper>
         )}
       </Formik>
@@ -126,12 +142,20 @@ const LoginForm = () => {
   )
 }
 
-const Wrapper = styled.div``
-
-const FormWrapper = styled(Form)`
+const Wrapper = styled.div`
   @media (min-width: 834px) {
     place-items: center;
   }
+`
+
+const FormMessageWrapper = styled.div`
+  padding: 16px;
+`
+
+const FormWrapper = styled(Form)`
+  border: solid 1px #bdbcbc;
+  border-radius: 16px;
+  padding: 24px;
 `
 
 const FormRow = styled.div`
@@ -165,11 +189,11 @@ const FormColumn = styled('div')<FormColumnProps>`
   text-align: ${(props) => props.textAlign};
 
   @media (min-width: 320px) {
-    margin: 4px 0;
+    margin: 8px 0;
   }
 
   @media (min-width: 834px) {
-    padding: 8px 32px;
+    padding: 0 32px;
     width: 100%;
   }
 `
@@ -195,18 +219,29 @@ const FormValidationMessage = styled.div`
   color: #ff0000;
 `
 
+const FormLinkWrapper = styled.div`
+  @media (min-width: 320px) {
+    padding-top: 16px;
+  }
+
+  @media (min-width: 834px) {
+    padding: 0;
+  }
+`
+
 const FormButton = styled(Button)`
-  margin-top: 16px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #333333;
   border-color: #333333;
 
   @media (min-width: 320px) {
-    width: 60%;
+    margin-top: 16px;
+    width: 40%;
   }
 
   @media (min-width: 834px) {
-    width: 40%;
+    margin-top: 8px;
+    width: 30%;
   }
 `
 

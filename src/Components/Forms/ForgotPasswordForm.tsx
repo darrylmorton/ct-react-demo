@@ -25,10 +25,12 @@ const ForgotPasswordForm = () => {
 
   return (
     <Wrapper data-testid="forgot-password-form">
-      {successMessage && (
-        <FormSuccessMessage>{successMessage}</FormSuccessMessage>
-      )}
-      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      <FormMessageWrapper>
+        {successMessage && (
+          <FormSuccessMessage>{successMessage}</FormSuccessMessage>
+        )}
+        {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      </FormMessageWrapper>
 
       <Formik
         initialValues={
@@ -95,7 +97,15 @@ const ForgotPasswordForm = () => {
   )
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  @media (min-width: 834px) {
+    place-items: center;
+  }
+`
+
+const FormMessageWrapper = styled.div`
+  padding: 16px;
+`
 
 const FormWrapper = styled(Form)`
   @media (min-width: 834px) {
@@ -165,13 +175,13 @@ const FormValidationMessage = styled.div`
 `
 
 const FormButton = styled(Button)`
-  margin-top: 16px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #333333;
   border-color: #333333;
 
   @media (min-width: 320px) {
-    width: 70%;
+    margin-top: 16px;
+    width: 100%;
   }
 
   @media (min-width: 834px) {
