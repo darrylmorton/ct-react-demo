@@ -71,7 +71,6 @@ const ForgotPasswordForm = () => {
                   as={FormField}
                   id="username"
                   name="username"
-                  // data-testid="username-input"
                   placeholder="john@example.com"
                   variant="outlined"
                   size="small"
@@ -108,9 +107,9 @@ const FormMessageWrapper = styled.div`
 `
 
 const FormWrapper = styled(Form)`
-  @media (min-width: 834px) {
-    place-items: center;
-  }
+  border: solid 1px #bdbcbc;
+  border-radius: 16px;
+  padding: 24px;
 `
 
 const FormRow = styled.div`
@@ -123,7 +122,6 @@ const FormRow = styled.div`
   @media (min-width: 834px) {
     flex-direction: row;
     width: 500px;
-    padding: 8px;
   }
 `
 
@@ -187,6 +185,16 @@ const FormButton = styled(Button)`
   @media (min-width: 834px) {
     width: 50%;
   }
+
+  //@media (min-width: 320px) {
+  //  margin-top: 16px;
+  //  width: 40%;
+  //}
+  //
+  //@media (min-width: 834px) {
+  //  margin-top: 8px;
+  //  width: 30%;
+  //}
 `
 
 export default ForgotPasswordForm

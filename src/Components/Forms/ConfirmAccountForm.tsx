@@ -109,9 +109,7 @@ const FormMessageWrapper = styled.div`
 `
 
 const FormWrapper = styled(Form)`
-  @media (min-width: 834px) {
-    place-items: center;
-  }
+  padding: 24px;
 `
 
 const FormRow = styled.div`
@@ -145,11 +143,11 @@ const FormColumn = styled('div')<FormColumnProps>`
   text-align: ${(props) => props.textAlign};
 
   @media (min-width: 320px) {
-    margin: 4px 0;
+    margin: 8px 0;
   }
 
   @media (min-width: 834px) {
-    padding: 8px 32px;
+    padding: 0 32px;
     width: 100%;
   }
 `
@@ -176,7 +174,6 @@ const FormButton = styled(Button)`
   border-color: #333333;
 
   @media (min-width: 320px) {
-    margin-top: 16px;
     width: 80%;
   }
 

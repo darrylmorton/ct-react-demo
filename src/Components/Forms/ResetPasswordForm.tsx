@@ -35,13 +35,17 @@ const ResetPasswordForm = () => {
 
   return (
     <Wrapper data-testid="reset-password-form">
-      {successMessage && (
-        <FormSuccessMessage>{successMessage}</FormSuccessMessage>
-      )}
-      {(errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>) ||
-        (!resetPasswordToken && (
-          <FormErrorMessage>Reset Password token is missing</FormErrorMessage>
-        ))}
+      <FormMessageWrapper>
+        {successMessage && (
+          <FormSuccessMessage>{successMessage}</FormSuccessMessage>
+        )}
+        {(errorMessage && (
+          <FormErrorMessage>{errorMessage}</FormErrorMessage>
+        )) ||
+          (!resetPasswordToken && (
+            <FormErrorMessage>Reset Password token is missing</FormErrorMessage>
+          ))}
+      </FormMessageWrapper>
 
       <Formik
         initialValues={
@@ -138,12 +142,20 @@ const ResetPasswordForm = () => {
   )
 }
 
-const Wrapper = styled.div``
-
-const FormWrapper = styled(Form)`
+const Wrapper = styled.div`
   @media (min-width: 834px) {
     place-items: center;
   }
+`
+
+const FormMessageWrapper = styled.div`
+  padding: 16px;
+`
+
+const FormWrapper = styled(Form)`
+  border: solid 1px #bdbcbc;
+  border-radius: 16px;
+  padding: 24px;
 `
 
 const FormRow = styled.div`
@@ -156,7 +168,6 @@ const FormRow = styled.div`
   @media (min-width: 834px) {
     flex-direction: row;
     width: 500px;
-    padding: 8px;
   }
 `
 
@@ -177,11 +188,11 @@ const FormColumn = styled('div')<FormColumnProps>`
   text-align: ${(props) => props.textAlign};
 
   @media (min-width: 320px) {
-    margin: 4px 0;
+    margin: 8px 0;
   }
 
   @media (min-width: 834px) {
-    padding: 8px 32px;
+    padding: 0 32px;
     width: 100%;
   }
 `
