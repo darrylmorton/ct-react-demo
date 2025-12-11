@@ -122,18 +122,16 @@ const LoginForm = () => {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn alignItems="center">
+              <FormColumnExt textAlign="right">
                 <FormLinkWrapper>
                   No account? <a href="/signup">Signup</a>
                 </FormLinkWrapper>
-              </FormColumn>
-            </FormRow>
-            <FormRow>
-              <FormColumn alignItems="center">
+              </FormColumnExt>
+              <FormColumnExt textAlign="left">
                 <FormLinkWrapper>
                   <a href="/forgot-password">Forgot Password</a>?
                 </FormLinkWrapper>
-              </FormColumn>
+              </FormColumnExt>
             </FormRow>
           </FormWrapper>
         )}
@@ -195,6 +193,20 @@ const FormColumn = styled('div')<FormColumnProps>`
   @media (min-width: 834px) {
     padding: 0 32px;
     width: 100%;
+  }
+`
+
+const FormColumnExt = styled(FormColumn)`
+  @media (min-width: 320px) {
+    margin: 0;
+    align-items: center;
+  }
+
+  @media (min-width: 834px) {
+    padding: 0 16px;
+    align-items: normal;
+
+    text-align: ${(props) => props.textAlign};
   }
 `
 
