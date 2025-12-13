@@ -4,7 +4,7 @@ import { userEvent, within, expect, screen } from 'storybook/test'
 import HamburgerMenu from '../../Components/Navigation/HamburgerMenu.tsx'
 
 const meta = {
-  title: 'HamburgerMenu/Navigation',
+  title: 'Navigation/HamburgerMenu',
   component: HamburgerMenu,
 } satisfies Meta<typeof HamburgerMenu>
 

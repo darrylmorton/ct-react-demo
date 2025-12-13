@@ -6,7 +6,7 @@ import { request } from '../../utils/AppUtil.ts'
 import { assertStorySignupPageElements } from '../../helpers/StoryHelper.tsx'
 
 const meta = {
-  title: 'Signup/Page',
+  title: 'Page/Signup',
   component: Signup,
 } satisfies Meta<typeof Signup>
 

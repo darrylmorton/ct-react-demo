@@ -14,7 +14,7 @@ import { ProtectedRoutes } from '../../Components/Auth/ProtectedRoutes.tsx'
 import Login from '../../Pages/Login.tsx'
 
 const meta = {
-  title: 'Logout/Page',
+  title: 'Page/Logout',
   component: Logout,
 } satisfies Meta<typeof Logout>
 

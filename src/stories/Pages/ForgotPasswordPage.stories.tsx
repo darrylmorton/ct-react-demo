@@ -7,7 +7,7 @@ import { assertStoryForgotPasswordPageElements } from '../../helpers/StoryHelper
 import { request } from '../../utils/AppUtil.ts'
 
 const meta = {
-  title: 'ForgotPassword/Page',
+  title: 'Page/ForgotPassword',
   component: ForgotPassword,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout

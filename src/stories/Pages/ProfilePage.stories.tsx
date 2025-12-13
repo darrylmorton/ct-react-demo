@@ -10,7 +10,7 @@ import Login from '../../Pages/Login.tsx'
 import { assertStoryLoginPageElements } from '../../helpers/StoryHelper.tsx'
 
 const meta = {
-  title: 'Profile/Page',
+  title: 'Page/Profile',
   component: Profile,
 } satisfies Meta<typeof Profile>
 

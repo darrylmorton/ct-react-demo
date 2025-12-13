@@ -8,7 +8,7 @@ import { request } from '../../utils/AppUtil.ts'
 import { confirmAccountToken } from '../../helpers/AppHelper.tsx'
 
 const meta = {
-  title: 'ConfirmAccount/Page',
+  title: 'Page/ConfirmAccount',
   component: ConfirmAccount,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout

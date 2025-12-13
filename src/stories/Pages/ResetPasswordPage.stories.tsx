@@ -8,7 +8,7 @@ import { resetPasswordToken } from '../../helpers/AppHelper.tsx'
 import { request } from '../../utils/AppUtil.ts'
 
 const meta = {
-  title: 'ResetPassword/Page',
+  title: 'Page/ResetPassword',
   component: ResetPassword,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout

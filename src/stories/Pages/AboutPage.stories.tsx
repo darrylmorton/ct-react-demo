@@ -4,7 +4,7 @@ import { expect, within } from 'storybook/test'
 import About from '../../Pages/About.tsx'
 
 const meta = {
-  title: 'About/Page',
+  title: 'Page/About',
   component: About,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
