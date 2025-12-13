@@ -179,10 +179,6 @@ const FormButton = styled(Button)`
   text-transform: none;
   width: 180px;
   margin-top: 16px;
-
-  //@media (min-width: 834px) {
-  //  margin: 0;
-  //}
 `
 
 export default ForgotPasswordForm

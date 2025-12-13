@@ -300,14 +300,6 @@ const FormButton = styled(Button)`
   text-transform: none;
   width: 100px;
   margin-top: 16px;
-
-  //@media (min-width: 320px) {
-  //  margin-top: 16px;
-  //}
-  //
-  //@media (min-width: 834px) {
-  //  margin: 0;
-  //}
 `
 
 export default SignupForm

@@ -102,7 +102,7 @@ describe('Reset Password Form', () => {
 
   test('Submits form successfully with valid inputs', async () => {
     const spy = vi.spyOn(AppUtil, 'request').mockResolvedValueOnce({
-      json: async () => ({ status: 200 }), // , authToken: 'fake-token' }),
+      json: async () => ({ status: 200 }),
     } as Response)
 
     render(

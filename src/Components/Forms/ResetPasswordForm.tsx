@@ -33,7 +33,6 @@ const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams()
   const resetPasswordToken = searchParams.get('resetPasswordToken') || ''
 
-  // TODO error messages both inside and outside of form should not be possible at the same time
   return (
     <Wrapper data-testid="reset-password-form">
       <FormMessageWrapper>

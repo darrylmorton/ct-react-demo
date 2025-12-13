@@ -29,7 +29,6 @@ export const assertSignupPageElements = () => {
 
 export const assertForgotPasswordPageElements = () => {
   return {
-    // ForgotPasswordForm renders an input with placeholder 'Email'
     usernameInput: screen.getByPlaceholderText('john@example.com'),
     submitButton: screen.getByText('Forgot Password'),
   }
