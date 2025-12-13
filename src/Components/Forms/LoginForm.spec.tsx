@@ -10,7 +10,7 @@ describe('Login Form', () => {
   test.skip('Should render the <LoginForm />', () => {
     render(<LoginForm />)
 
-    expect(screen.getByText('Login Form')).toBeInTheDocument()
+    expect(screen.getByTestId('login-form')).toBeInTheDocument()
   })
 
   test('Displays validation errors for empty required fields', async () => {

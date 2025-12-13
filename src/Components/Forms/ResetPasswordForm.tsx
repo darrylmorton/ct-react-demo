@@ -1,74 +1,76 @@
 import styled from '@emotion/styled'
-// import 'react-app-polyfill/ie11';
 import { Formik, Form, Field } from 'formik'
 import { useState } from 'react'
 import * as Yup from 'yup'
 import { Button, TextField } from '@mui/material'
+import { useSearchParams } from 'react-router'
 
 import {
-  REGEX_EMAIL,
   request,
   API_URL,
-  type LoginRequestValues,
+  type ResetPasswordRequestValues,
 } from '../../utils/AppUtil'
 
-const LoginSchema = Yup.object({
-  username: Yup.string()
-    .matches(REGEX_EMAIL, {
-      message: 'Required',
-    })
-    .required('Required'),
-  password: Yup.string()
+const ResetPasswordSchema = Yup.object({
+  resetPasswordToken: Yup.string()
     .min(8, 'Required')
-    .max(16, 'Required')
+    .max(200, 'Required')
+    .required('Reset Password Token is Required'),
+  password: Yup.string()
+    .min(8, 'Too Short!')
+    .max(16, 'Too Long!')
     .required('Required'),
+  confirmPassword: Yup.string()
+    .min(8, 'Too Short!')
+    .max(16, 'Too Long!')
+    .equals([Yup.ref('password')], 'Passwords do not match')
+    .required('Passwords do not match'),
 })
 
-const LoginForm = () => {
+const ResetPasswordForm = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [searchParams] = useSearchParams()
+  const resetPasswordToken = searchParams.get('resetPasswordToken') || ''
 
   return (
-    <Wrapper data-testid="login-form">
+    <Wrapper data-testid="reset-password-form">
       <FormMessageWrapper>
         {successMessage && (
           <FormSuccessMessage>{successMessage}</FormSuccessMessage>
         )}
-        {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+        {(errorMessage && (
+          <FormErrorMessage>{errorMessage}</FormErrorMessage>
+        )) ||
+          (!resetPasswordToken && (
+            <FormErrorMessage>Reset Password token is missing</FormErrorMessage>
+          ))}
       </FormMessageWrapper>
 
       <Formik
         initialValues={
           {
-            username: '',
+            resetPasswordToken,
             password: '',
-          } as LoginRequestValues
+            confirmPassword: '',
+          } as ResetPasswordRequestValues
         }
-        validationSchema={LoginSchema}
-        onReset={() => {
-          if (successMessage) setSuccessMessage('')
-          if (errorMessage) setErrorMessage('')
-        }}
-        onSubmit={async (values: LoginRequestValues) => {
-          const response = await request('login', {
-            username: values.username,
+        validationSchema={ResetPasswordSchema}
+        onSubmit={async (values: ResetPasswordRequestValues) => {
+          const response = await request('reset-password', {
+            resetPasswordToken: values.resetPasswordToken,
             password: values.password,
-          } as LoginRequestValues)
+          } as ResetPasswordRequestValues)
 
           try {
             const responseJson = await response.json()
-            localStorage.setItem('authToken', responseJson.authToken)
 
             if (responseJson.status !== 200) {
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
-            } else if (responseJson.status === 200 && responseJson.authToken) {
-              localStorage.setItem('authToken', responseJson.authToken)
-
+            } else {
               setSuccessMessage('Submitted successfully')
               if (errorMessage) setErrorMessage('')
-            } else {
-              throw new Error('Request error')
             }
           } catch (err) {
             console.error('Server error', err)
@@ -79,24 +81,20 @@ const LoginForm = () => {
         }}
       >
         {({ errors, touched }) => (
-          <FormWrapper id="loginForm" method="POST" action={API_URL}>
+          <FormWrapper id="resetPasswordForm" method="POST" action={API_URL}>
+            <Field
+              id="resetPasswordToken"
+              name="resetPasswordToken"
+              data-testid="reset-password-token-input"
+              type="hidden"
+              value={resetPasswordToken}
+            />
+            {errors.resetPasswordToken && touched.resetPasswordToken ? (
+              <FormValidationMessage>
+                {errors.resetPasswordToken}
+              </FormValidationMessage>
+            ) : null}
             <FormRow>
-              <FormColumn textAlign="left">
-                <label htmlFor="username">Email*:</label>
-                <Field
-                  as={FormField}
-                  id="username"
-                  name="username"
-                  placeholder="john@example.com"
-                  variant="outlined"
-                  size="small"
-                />
-                {errors.username && touched.username ? (
-                  <FormValidationMessage>
-                    {errors.username}
-                  </FormValidationMessage>
-                ) : null}
-              </FormColumn>
               <FormColumn textAlign="left">
                 <label htmlFor="password">Password*:</label>
                 <Field
@@ -113,25 +111,29 @@ const LoginForm = () => {
                   </FormValidationMessage>
                 ) : null}
               </FormColumn>
+              <FormColumn textAlign="left">
+                <label htmlFor="confirmPassword">Confirm Password*:</label>
+                <Field
+                  as={FormField}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  variant="outlined"
+                  size="small"
+                />
+                {errors.confirmPassword && touched.confirmPassword ? (
+                  <FormValidationMessage>
+                    {errors.confirmPassword}
+                  </FormValidationMessage>
+                ) : null}
+              </FormColumn>
             </FormRow>
             <FormRow>
               <FormColumn alignItems="center">
                 <FormButton type="submit" variant="outlined" size="medium">
-                  Login
+                  Reset Password
                 </FormButton>
               </FormColumn>
-            </FormRow>
-            <FormRow>
-              <FormColumnExt textAlign="right">
-                <FormLinkWrapper>
-                  No account? <a href="/signup">Signup</a>
-                </FormLinkWrapper>
-              </FormColumnExt>
-              <FormColumnExt textAlign="left">
-                <FormLinkWrapper>
-                  <a href="/forgot-password">Forgot Password</a>?
-                </FormLinkWrapper>
-              </FormColumnExt>
             </FormRow>
           </FormWrapper>
         )}
@@ -166,7 +168,6 @@ const FormRow = styled.div`
   @media (min-width: 834px) {
     flex-direction: row;
     width: 500px;
-    padding: 8px;
   }
 `
 
@@ -196,20 +197,6 @@ const FormColumn = styled('div')<FormColumnProps>`
   }
 `
 
-const FormColumnExt = styled(FormColumn)`
-  @media (min-width: 320px) {
-    margin: 0;
-    align-items: center;
-  }
-
-  @media (min-width: 834px) {
-    padding: 0 16px;
-    align-items: normal;
-
-    text-align: ${(props) => props.textAlign};
-  }
-`
-
 const FormField = styled(TextField)`
   width: 100%;
   font-size: 1rem;
@@ -231,23 +218,13 @@ const FormValidationMessage = styled.div`
   color: #ff0000;
 `
 
-const FormLinkWrapper = styled.div`
-  @media (min-width: 320px) {
-    padding-top: 16px;
-  }
-
-  @media (min-width: 834px) {
-    padding: 0;
-  }
-`
-
 const FormButton = styled(Button)`
+  margin-top: 16px;
   font-size: 1rem;
   color: #333333;
   border-color: #333333;
   text-transform: none;
-  margin-top: 16px;
-  width: 100px;
+  width: 160px;
 `
 
-export default LoginForm
+export default ResetPasswordForm

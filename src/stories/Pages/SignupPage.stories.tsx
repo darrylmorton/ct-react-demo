@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, screen, fireEvent, mocked } from 'storybook/test'
 
-import Signup from '../Pages/Signup'
-import { request } from '../utils/AppUtil.ts'
-import { assertStorySignupPageElements } from '../helpers/StoryHelper.tsx'
+import Signup from '../../Pages/Signup.tsx'
+import { request } from '../../utils/AppUtil.ts'
+import { assertStorySignupPageElements } from '../../helpers/StoryHelper.tsx'
 
 const meta = {
-  title: 'Signup/Page',
+  title: 'Page/Signup',
   component: Signup,
 } satisfies Meta<typeof Signup>
 

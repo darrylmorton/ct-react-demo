@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { Button, TextField } from '@mui/material'
 
 import {
-  EMAIL_REGEX,
+  REGEX_EMAIL,
   request,
   type SignupFormValues,
   API_URL,
@@ -23,7 +23,7 @@ const SignupSchema = Yup.object({
     .max(30, 'Too Long!')
     .required('Required'),
   username: Yup.string()
-    .matches(EMAIL_REGEX, {
+    .matches(REGEX_EMAIL, {
       message: 'Invalid email',
     })
     .required('Required'),
@@ -43,11 +43,13 @@ const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   return (
-    <Wrapper>
-      {successMessage && (
-        <FormSuccessMessage>{successMessage}</FormSuccessMessage>
-      )}
-      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+    <Wrapper data-testid="signup-form">
+      <FormMessageWrapper>
+        {successMessage && (
+          <FormSuccessMessage>{successMessage}</FormSuccessMessage>
+        )}
+        {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      </FormMessageWrapper>
 
       <Formik
         initialValues={
@@ -74,11 +76,8 @@ const SignupForm = () => {
 
           try {
             const responseJson = await response.json()
-            console.log('responseJson.status', responseJson.status)
 
             if (responseJson.status !== 200) {
-              console.error(responseJson.message)
-
               setErrorMessage('Submitted unsuccessfully')
               if (successMessage) setSuccessMessage('')
             } else {
@@ -193,6 +192,13 @@ const SignupForm = () => {
                 </FormButton>
               </FormColumn>
             </FormRow>
+            <FormRow>
+              <FormColumn alignItems="center">
+                <FormLinkWrapper>
+                  Already signed up? <a href="/login">Login</a>
+                </FormLinkWrapper>
+              </FormColumn>
+            </FormRow>
           </FormWrapper>
         )}
       </Formik>
@@ -200,12 +206,20 @@ const SignupForm = () => {
   )
 }
 
-const Wrapper = styled.div``
-
-const FormWrapper = styled(Form)`
+const Wrapper = styled.div`
   @media (min-width: 834px) {
     place-items: center;
   }
+`
+
+const FormMessageWrapper = styled.div`
+  padding: 16px;
+`
+
+const FormWrapper = styled(Form)`
+  border: solid 1px #bdbcbc;
+  border-radius: 16px;
+  padding: 24px;
 `
 
 const FormRow = styled.div`
@@ -239,11 +253,11 @@ const FormColumn = styled('div')<FormColumnProps>`
   text-align: ${(props) => props.textAlign};
 
   @media (min-width: 320px) {
-    margin: 4px 0;
+    margin: 8px 0;
   }
 
   @media (min-width: 834px) {
-    padding: 8px 32px;
+    padding: 0 32px;
     width: 100%;
   }
 `
@@ -269,19 +283,23 @@ const FormValidationMessage = styled.div`
   color: #ff0000;
 `
 
-const FormButton = styled(Button)`
-  margin-top: 16px;
-  font-size: 1rem;
-  color: #333333;
-  border-color: #333333;
-
+const FormLinkWrapper = styled.div`
   @media (min-width: 320px) {
-    width: 60%;
+    padding-top: 16px;
   }
 
   @media (min-width: 834px) {
-    width: 80%;
+    padding: 0;
   }
+`
+
+const FormButton = styled(Button)`
+  font-size: 1rem;
+  color: #333333;
+  border-color: #333333;
+  text-transform: none;
+  width: 100px;
+  margin-top: 16px;
 `
 
 export default SignupForm

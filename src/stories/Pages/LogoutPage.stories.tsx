@@ -2,19 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, screen, mocked } from 'storybook/test'
 import { MemoryRouter, Routes, Route } from 'react-router'
 
-import Logout from '../Pages/Logout'
-import { request } from '../utils/AppUtil'
-import { authToken } from '../helpers/AppHelper.tsx'
+import Logout from '../../Pages/Logout.tsx'
+import { request } from '../../utils/AppUtil.ts'
+import { authToken } from '../../helpers/AppHelper.tsx'
 import {
   assertStoryLoginPageElements,
   assertStoryLogoutPageElements,
-} from '../helpers/StoryHelper.tsx'
-import { AuthProvider } from '../Pages/AuthProvider'
-import { ProtectedRoutes } from '../Pages/ProtectedRoutes'
-import Login from '../Pages/Login.tsx'
+} from '../../helpers/StoryHelper.tsx'
+import { AuthProvider } from '../../Components/Auth/AuthProvider.tsx'
+import { ProtectedRoutes } from '../../Components/Auth/ProtectedRoutes.tsx'
+import Login from '../../Pages/Login.tsx'
 
 const meta = {
-  title: 'Logout/Page',
+  title: 'Page/Logout',
   component: Logout,
 } satisfies Meta<typeof Logout>
 

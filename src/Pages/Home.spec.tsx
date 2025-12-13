@@ -8,6 +8,6 @@ describe('Home Page', () => {
   test('Should render the <Home />', () => {
     render(<Home />)
 
-    expect(screen.getByText('Home')).toBeInTheDocument()
+    expect(screen.getByTestId('home-page')).toBeInTheDocument()
   })
 })
