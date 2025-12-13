@@ -13,7 +13,9 @@ import * as AppUtil from '../../utils/AppUtil'
 describe('Reset Password Form', () => {
   test.skip('Should render the <ResetPasswordForm />', () => {
     render(
-      <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+      <MemoryRouter
+        initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+      >
         <ResetPasswordForm />
       </MemoryRouter>
     )
@@ -23,7 +25,9 @@ describe('Reset Password Form', () => {
 
   test('Displays validation errors for empty required fields', async () => {
     render(
-      <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+      <MemoryRouter
+        initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+      >
         <ResetPasswordForm />
       </MemoryRouter>
     )
@@ -39,23 +43,11 @@ describe('Reset Password Form', () => {
     ).toBeInTheDocument()
   })
 
-  // test('Displays error for invalid email format', async () => {
-  //   render(
-  //     <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
-  //       <ResetPasswordForm />
-  //     </MemoryRouter>
-  //   )
-  //
-  //   const { resetPasswordButton } = assertResetPasswordPageElements()
-  //
-  //   fireEvent.click(resetPasswordButton)
-  //
-  //   expect(await screen.findByText('Invalid email')).toBeInTheDocument()
-  // })
-
   test('Displays error when passwords do not match', async () => {
     render(
-      <MemoryRouter initialEntries={[`/?resetPasswordToken=abcd1234`]}>
+      <MemoryRouter
+        initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+      >
         <ResetPasswordForm />
       </MemoryRouter>
     )

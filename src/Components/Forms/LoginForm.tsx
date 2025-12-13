@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { Button, TextField } from '@mui/material'
 
 import {
-  EMAIL_REGEX,
+  REGEX_EMAIL,
   request,
   API_URL,
   type LoginRequestValues,
@@ -14,7 +14,7 @@ import {
 
 const LoginSchema = Yup.object({
   username: Yup.string()
-    .matches(EMAIL_REGEX, {
+    .matches(REGEX_EMAIL, {
       message: 'Required',
     })
     .required('Required'),
@@ -242,19 +242,12 @@ const FormLinkWrapper = styled.div`
 `
 
 const FormButton = styled(Button)`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #333333;
   border-color: #333333;
-
-  @media (min-width: 320px) {
-    margin-top: 16px;
-    width: 40%;
-  }
-
-  @media (min-width: 834px) {
-    margin-top: 8px;
-    width: 30%;
-  }
+  text-transform: none;
+  margin-top: 16px;
+  width: 100px;
 `
 
 export default LoginForm

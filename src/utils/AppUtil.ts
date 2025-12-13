@@ -1,4 +1,8 @@
-export const EMAIL_REGEX = new RegExp(
+export const REGEX_JWT = new RegExp(
+  /^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\\+/=]*)/
+)
+
+export const REGEX_EMAIL = new RegExp(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/
 )
 

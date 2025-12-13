@@ -3,7 +3,10 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
 import ConfirmAccountForm from './ConfirmAccountForm.tsx'
-import { assertConfirmAccountPageElements } from '../../helpers/AppHelper.tsx'
+import {
+  assertConfirmAccountPageElements,
+  confirmAccountToken,
+} from '../../helpers/AppHelper.tsx'
 import * as AppUtil from '../../utils/AppUtil'
 import { MemoryRouter } from 'react-router'
 
@@ -30,7 +33,7 @@ describe('Confirm Account Form', () => {
     fireEvent.click(confirmAccountButton)
 
     expect(
-      await screen.findByText('Confirm Account Token is Required')
+      await screen.findByText('Account confirmation token is missing')
     ).toBeInTheDocument()
   })
 
@@ -58,12 +61,9 @@ describe('Confirm Account Form', () => {
       json: async () => ({ status: 400 }),
     } as Response)
 
-    // Provide a valid-length token via router initialEntries so Formik validation passes
-    const invalidButLongToken = 'abcdefgh' // 8 chars meets min length
-
     render(
       <MemoryRouter
-        initialEntries={[`/?confirmAccountToken=${invalidButLongToken}`]}
+        initialEntries={[`/?confirmAccountToken=${confirmAccountToken}`]}
       >
         <ConfirmAccountForm />
       </MemoryRouter>
@@ -85,11 +85,10 @@ describe('Confirm Account Form', () => {
       json: async () => ({ status: 200, authToken: 'fake-token' }),
     } as Response)
 
-    // Use a token of valid length (8 chars) so validation passes
-    const validToken = 'abcd1234'
-
     render(
-      <MemoryRouter initialEntries={[`/?confirmAccountToken=${validToken}`]}>
+      <MemoryRouter
+        initialEntries={[`/?confirmAccountToken=${confirmAccountToken}`]}
+      >
         <ConfirmAccountForm />
       </MemoryRouter>
     )

@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, within } from 'storybook/test'
+import { expect, userEvent, screen, mocked, fireEvent } from 'storybook/test'
 
 import ResetPassword from '../../Pages/ResetPassword.tsx'
 import { MemoryRouter } from 'react-router'
+import { assertStoryResetPasswordPageElements } from '../../helpers/StoryHelper.tsx'
+import { resetPasswordToken } from '../../helpers/AppHelper.tsx'
+import { request } from '../../utils/AppUtil.ts'
 
 const meta = {
   title: 'ResetPassword/Page',
@@ -17,15 +20,91 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // More on component testing: https://storybook.js.org/docs/writing-tests/interaction-testing
-export const ResetPasswordPage: Story = {
+export const ResetPasswordPageInvalid: Story = {
   render: () => (
-    <MemoryRouter>
+    <MemoryRouter
+      initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+    >
       <ResetPassword />
     </MemoryRouter>
   ),
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const about = canvas.getByTestId('reset-password-page')
-    await expect(about).toBeInTheDocument()
+    const { resetPasswordButton } =
+      await assertStoryResetPasswordPageElements(canvasElement)
+
+    await userEvent.click(resetPasswordButton)
+
+    expect(await screen.findAllByText('Required')).toHaveLength(1)
+    expect(
+      await screen.findByText('Passwords do not match')
+    ).toBeInTheDocument()
+  },
+}
+
+export const ResetPasswordPageUnsuccessful: Story = {
+  beforeEach: async () => {
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return Promise.resolve({ message: 'Error 400', status: 400 })
+      },
+    } as Response)
+  },
+  render: () => (
+    <MemoryRouter
+      initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+    >
+      <ResetPassword />
+    </MemoryRouter>
+  ),
+  play: async ({ canvasElement }) => {
+    const { passwordInput, confirmPasswordInput, resetPasswordButton } =
+      await assertStoryResetPasswordPageElements(canvasElement)
+
+    fireEvent.change(passwordInput, {
+      target: { value: 'password123' },
+    })
+    fireEvent.change(confirmPasswordInput, {
+      target: { value: 'password123' },
+    })
+
+    await userEvent.click(resetPasswordButton)
+
+    expect(
+      await screen.findByText('Submitted unsuccessfully')
+    ).toBeInTheDocument()
+  },
+}
+
+export const ResetPasswordPage: Story = {
+  beforeEach: async () => {
+    mocked(request).mockResolvedValue({
+      json: async () => {
+        return Promise.resolve({ status: 200 })
+      },
+    } as Response)
+  },
+  render: () => (
+    <MemoryRouter
+      initialEntries={[`/?resetPasswordToken=${resetPasswordToken}`]}
+    >
+      <ResetPassword />
+    </MemoryRouter>
+  ),
+  play: async ({ canvasElement }) => {
+    const { resetPasswordButton, passwordInput, confirmPasswordInput } =
+      await assertStoryResetPasswordPageElements(canvasElement)
+
+    fireEvent.change(passwordInput, {
+      target: { value: 'password123' },
+    })
+    fireEvent.change(confirmPasswordInput, {
+      target: { value: 'password123' },
+    })
+
+    await userEvent.click(resetPasswordButton)
+
+    expect(
+      await screen.findByText('Submitted successfully')
+    ).toBeInTheDocument()
   },
 }

@@ -14,7 +14,9 @@ const LogoutForm = () => {
       {successMessage && (
         <FormSuccessMessage>{successMessage}</FormSuccessMessage>
       )}
-      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+      {!successMessage && errorMessage && (
+        <FormErrorMessage>{errorMessage}</FormErrorMessage>
+      )}
 
       <Formik
         initialValues={{}}
@@ -51,28 +53,28 @@ const LogoutForm = () => {
           }
         }}
       >
-        {() => (
-          <FormWrapper id="logoutForm" method="POST" action={API_URL}>
-            <FormRow>
-              <FormColumn alignItems="center">
-                <FormButton type="submit" variant="outlined" size="medium">
-                  Logout
-                </FormButton>
-              </FormColumn>
-            </FormRow>
-          </FormWrapper>
-        )}
+        <FormWrapper id="logoutForm" method="POST" action={API_URL}>
+          <FormRow>
+            <FormColumn alignItems="center">
+              <FormButton type="submit" variant="outlined" size="medium">
+                Logout
+              </FormButton>
+            </FormColumn>
+          </FormRow>
+        </FormWrapper>
       </Formik>
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div``
-
-const FormWrapper = styled(Form)`
+const Wrapper = styled.div`
   @media (min-width: 834px) {
     place-items: center;
   }
+`
+
+const FormWrapper = styled(Form)`
+  padding: 0;
 `
 
 const FormRow = styled.div`
@@ -85,7 +87,6 @@ const FormRow = styled.div`
   @media (min-width: 834px) {
     flex-direction: row;
     width: 500px;
-    padding: 8px;
   }
 `
 
@@ -98,19 +99,10 @@ const FormColumn = styled('div')<FormColumnProps>`
   display: flex;
   flex-direction: column;
 
-  label {
-    margin-bottom: 4px;
-  }
-
   align-items: ${(props) => props.alignItems};
   text-align: ${(props) => props.textAlign};
 
-  @media (min-width: 320px) {
-    margin: 4px 0;
-  }
-
   @media (min-width: 834px) {
-    padding: 8px 32px;
     width: 100%;
   }
 `
@@ -128,18 +120,12 @@ const FormErrorMessage = styled.div`
 `
 
 const FormButton = styled(Button)`
-  margin-top: 16px;
   font-size: 1rem;
   color: #333333;
   border-color: #333333;
-
-  @media (min-width: 320px) {
-    width: 60%;
-  }
-
-  @media (min-width: 834px) {
-    width: 40%;
-  }
+  text-transform: none;
+  width: 100px;
+  margin-top: 16px;
 `
 
 export default LogoutForm

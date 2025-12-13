@@ -8,12 +8,12 @@ import {
   request,
   API_URL,
   type ForgotPasswordRequestValues,
-  EMAIL_REGEX,
+  REGEX_EMAIL,
 } from '../../utils/AppUtil'
 
 const ForgotPasswordFormSchema = Yup.object({
   username: Yup.string()
-    .matches(EMAIL_REGEX, {
+    .matches(REGEX_EMAIL, {
       message: 'Invalid email',
     })
     .required('Required'),
@@ -173,27 +173,15 @@ const FormValidationMessage = styled.div`
 `
 
 const FormButton = styled(Button)`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #333333;
   border-color: #333333;
+  text-transform: none;
+  width: 180px;
+  margin-top: 16px;
 
-  @media (min-width: 320px) {
-    margin-top: 16px;
-    width: 100%;
-  }
-
-  @media (min-width: 834px) {
-    width: 50%;
-  }
-
-  //@media (min-width: 320px) {
-  //  margin-top: 16px;
-  //  width: 40%;
-  //}
-  //
   //@media (min-width: 834px) {
-  //  margin-top: 8px;
-  //  width: 30%;
+  //  margin: 0;
   //}
 `
 

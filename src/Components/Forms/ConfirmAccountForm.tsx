@@ -9,13 +9,15 @@ import {
   request,
   API_URL,
   type ConfirmAccountRequestValues,
+  REGEX_JWT,
 } from '../../utils/AppUtil'
 
 const ConfirmAccountSchema = Yup.object({
   confirmAccountToken: Yup.string()
-    .min(8, 'Required')
-    .max(16, 'Required')
-    .required('Confirm Account Token is Required'),
+    .matches(REGEX_JWT, {
+      message: 'Invalid confirm account token format',
+    })
+    .required('Invalid confirm account token format'),
 })
 
 const ConfirmAccountForm = () => {
@@ -26,19 +28,15 @@ const ConfirmAccountForm = () => {
 
   return (
     <Wrapper data-testid="confirm-account-form">
-      <FormMessageWrapper>
-        {successMessage && (
-          <FormSuccessMessage>{successMessage}</FormSuccessMessage>
-        )}
-        {(errorMessage && (
-          <FormErrorMessage>{errorMessage}</FormErrorMessage>
-        )) ||
-          (!confirmAccountToken && (
-            <FormErrorMessage>
-              Account confirmation token is missing
-            </FormErrorMessage>
-          ))}
-      </FormMessageWrapper>
+      {successMessage && (
+        <FormSuccessMessage>{successMessage}</FormSuccessMessage>
+      )}
+      {(errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>) ||
+        (!confirmAccountToken && (
+          <FormErrorMessage>
+            Account confirmation token is missing
+          </FormErrorMessage>
+        ))}
 
       <Formik
         initialValues={
@@ -104,12 +102,8 @@ const Wrapper = styled.div`
   }
 `
 
-const FormMessageWrapper = styled.div`
-  padding: 16px;
-`
-
 const FormWrapper = styled(Form)`
-  padding: 24px;
+  padding: 0;
 `
 
 const FormRow = styled.div`
@@ -122,7 +116,6 @@ const FormRow = styled.div`
   @media (min-width: 834px) {
     flex-direction: row;
     width: 500px;
-    padding: 8px;
   }
 `
 
@@ -135,19 +128,10 @@ const FormColumn = styled('div')<FormColumnProps>`
   display: flex;
   flex-direction: column;
 
-  label {
-    margin-bottom: 4px;
-  }
-
   align-items: ${(props) => props.alignItems};
   text-align: ${(props) => props.textAlign};
 
-  @media (min-width: 320px) {
-    margin: 8px 0;
-  }
-
   @media (min-width: 834px) {
-    padding: 0 32px;
     width: 100%;
   }
 `
@@ -169,17 +153,12 @@ const FormValidationMessage = styled.div`
 `
 
 const FormButton = styled(Button)`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #333333;
   border-color: #333333;
-
-  @media (min-width: 320px) {
-    width: 80%;
-  }
-
-  @media (min-width: 834px) {
-    width: 50%;
-  }
+  text-transform: none;
+  width: 180px;
+  margin-top: 16px;
 `
 
 export default ConfirmAccountForm
