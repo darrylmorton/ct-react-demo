@@ -7,10 +7,10 @@ on:
 jobs:
   deploy-storybook:
     runs-on: ubuntu-latest
-    uses: actions/checkout@v4
 
     steps:
-      - uses: darrylmorton/storybook-github-pages-publish@feature/storybook-deploy-workflow
+      - name: Deploy
+        uses: darrylmorton/storybook-github-pages-publish@feature/storybook-deploy-workflow
         with:
           nodejs-version: '22'
   
