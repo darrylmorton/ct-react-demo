@@ -6,11 +6,7 @@ on:
 
 jobs:
   deploy-storybook:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy
-        uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/storybook-github-pages-publish.yml@feature/storybook-deploy-workflow
-        with:
-          nodejs-version: '22'
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/storybook-github-pages-publish.yml@feature/storybook-deploy-workflow
+    with:
+      nodejs-version: '22'
   
