@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Deploy
-        uses: darrylmorton/storybook-github-pages-publish@feature/storybook-deploy-workflow
+        uses: darrylmorton/.github/workflows/storybook-github-pages-publish@feature/storybook-deploy-workflow
         with:
           nodejs-version: '22'
   
