@@ -7,6 +7,4 @@ on:
 jobs:
   deploy-storybook:
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/storybook-github-pages-publish.yml@feature/storybook-deploy-workflow
-    with:
-      nodejs-version: '22'
   
