@@ -30,7 +30,7 @@ on:
         description: Working directory
         required: false
         default: .
-        type: boolean
+        type: string
       storybook-playwright-install-flag:
         description: Install playwright for Storybook tests
         required: false
@@ -39,10 +39,7 @@ on:
 
 jobs:
   test-unit-coverage:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
-        with:
-          nodejs-version: '22.x'
-          storybook-playwright-install-flag: true
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
+    with:
+      nodejs-version: '22.x'
+      storybook-playwright-install-flag: true
