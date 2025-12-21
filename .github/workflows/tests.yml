@@ -1,41 +1,43 @@
 name: Install, Lint, Build and Test
 
 on:
-  push:
-    branches-ignore: [ 'main' ]
+#  push:
+#    branches: ['main']
+  pull_request:
+    branches: ['main']
 
-  workflow_dispatch:
-    inputs:
-      nodejs-version:
-        description: Node.js version
-        required: true
-        default: lts/*
-      working-directory:
-        description: Working directory
-        required: false
-        default: .
-      storybook-playwright-install-flag:
-        description: Install playwright for Storybook tests
-        required: false
-        default: false
-
-  workflow_call:
-    inputs:
-      nodejs-version:
-        description: Node.js version
-        required: true
-        default: lts/*
-        type: string
-      working-directory:
-        description: Working directory
-        required: false
-        default: .
-        type: string
-      storybook-playwright-install-flag:
-        description: Install playwright for Storybook tests
-        required: false
-        default: false
-        type: boolean
+#  workflow_dispatch:
+#    inputs:
+#      nodejs-version:
+#        description: Node.js version
+#        required: true
+#        default: lts/*
+#      working-directory:
+#        description: Working directory
+#        required: false
+#        default: .
+#      storybook-playwright-install-flag:
+#        description: Install playwright for Storybook tests
+#        required: false
+#        default: false
+#
+#  workflow_call:
+#    inputs:
+#      nodejs-version:
+#        description: Node.js version
+#        required: true
+#        default: lts/*
+#        type: string
+#      working-directory:
+#        description: Working directory
+#        required: false
+#        default: .
+#        type: string
+#      storybook-playwright-install-flag:
+#        description: Install playwright for Storybook tests
+#        required: false
+#        default: false
+#        type: boolean
 
 jobs:
   test-unit-coverage:
