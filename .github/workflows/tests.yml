@@ -2,7 +2,8 @@ name: Install, Lint, Build and Test
 
 on:
   push:
-    branches-ignore: [ 'main' ]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   test-unit-coverage:
