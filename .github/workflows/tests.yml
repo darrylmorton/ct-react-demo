@@ -4,42 +4,45 @@ on:
   push:
     branches-ignore: [ 'main' ]
 
-  workflow_dispatch:
-    inputs:
-      nodejs-version:
-        description: Node.js version
-        required: true
-        default: lts/*
-      working-directory:
-        description: Working directory
-        required: false
-        default: .
-      storybook-playwright-install-flag:
-        description: Install playwright for Storybook tests
-        required: false
-        default: false
-
-  workflow_call:
-    inputs:
-      nodejs-version:
-        description: Node.js version
-        required: true
-        default: lts/*
-        type: string
-      working-directory:
-        description: Working directory
-        required: false
-        default: .
-        type: boolean
-      storybook-playwright-install-flag:
-        description: Install playwright for Storybook tests
-        required: false
-        default: false
-        type: boolean
+#  workflow_dispatch:
+#    inputs:
+#      nodejs-version:
+#        description: Node.js version
+#        required: true
+#        default: lts/*
+#      working-directory:
+#        description: Working directory
+#        required: false
+#        default: .
+#      storybook-playwright-install-flag:
+#        description: Install playwright for Storybook tests
+#        required: false
+#        default: false
+#
+#  workflow_call:
+#    inputs:
+#      nodejs-version:
+#        description: Node.js version
+#        required: true
+#        default: lts/*
+#        type: string
+#      working-directory:
+#        description: Working directory
+#        required: false
+#        default: .
+#        type: boolean
+#      storybook-playwright-install-flag:
+#        description: Install playwright for Storybook tests
+#        required: false
+#        default: false
+#        type: boolean
 
 jobs:
   test-unit-coverage:
-    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
-    with:
-      nodejs-version: '22.x'
-      storybook-playwright-install-flag: true
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
+        with:
+          nodejs-version: '22.x'
+          storybook-playwright-install-flag: true
