@@ -2,10 +2,11 @@ name: Install, Lint, Build and Test
 
 on:
   push:
-    branches-ignore: [ 'main' ]
+    branches-ignore: [ "main" ]
 
 jobs:
   test-unit-coverage:
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
     with:
       nodejs-version: '22.x'
+      storybook-playwright-install-flag: true
